@@ -1,0 +1,34 @@
+#header {
+    background-color: red;
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:15%;
+}
+
+#menu {
+    background-color: blue;
+    position:absolute;
+    top:15%;
+    left:0;
+    width:100%;
+    height:10%;
+}
+
+#content{
+    background-color: green;
+    position:absolute;
+    top:25%;
+    left:0;
+    width:100%;
+    height:65%;
+}
+#footer {
+    background-color: yellow;
+    position:absolute;
+    top:90%;
+    left:0;
+    width:100%;
+    height:10%;
+}
