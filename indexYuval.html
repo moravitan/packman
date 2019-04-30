@@ -7,6 +7,7 @@
 </head>
 
 <body>
+<script type="text/javascript" src="jquery.js"></script>
 <div id="header">
 
 </div><!--end header-->
@@ -44,9 +45,19 @@
         </form>
 
     </section>
-    <section id="Login">355</section>
-    <section id="Settings">356</section>
+    <section id="Login">
+        <b>User name: </b> <input type="text" id="userNameCheck" placeholder="please enter your user name">
+        <br>
+        <br>
+        <b>Password </b> <input type="text" id="PasswordCheck" placeholder="please enter your Password">
+        <br>
+        <br>
+        <button id="Connect" type="button" onClick="checkUser()"> Connect </button>
 
+    </section>
+    <section id="Settings"> setting :) </section>
+
+    <section id="startGame"> start! </section>
 </div><!--end content-->
 
 
@@ -61,7 +72,7 @@ TIME: <input id="lblTime" type="text"/>
 <canvas id="canvas" height="505" width="505"></canvas>
 
 <script type="text/javascript" src=javascriptYuval.js></script>
-<script type="text/javascript" src="jquery.js"></script>
+
 <script>
     $(document).ready(function () {
         start();

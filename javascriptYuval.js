@@ -7,12 +7,12 @@ function start(){
     showDiv('Welcome');
 }
 
-
 function showDiv(id){
     document.getElementById('Welcome').style.display = 'none';
     document.getElementById('Register').style.display = 'none';
     document.getElementById('Login').style.display = 'none';
     document.getElementById('Settings').style.display = 'none';
+    document.getElementById('startGame').style.display = 'none';
     document.getElementById(id).style.display = 'block';
 }
 
@@ -20,7 +20,22 @@ function login(){
     document.getElementById('Welcome').style.display = 'none';
     document.getElementById('Register').style.display = 'none';
     document.getElementById('Settings').style.display = 'none';
+    document.getElementById('startGame').style.display = 'none';
     document.getElementById('Login').style.display = 'block';
+}
+
+function checkUser() {
+    var passwordToCheck = document.getElementById("PasswordCheck").value;
+    var userToCheck = document.getElementById("PasswordCheck").value;
+    for (var i = 0; i < users.length; i++) {
+        if (users[i].userName === userToCheck && users[i].password === passwordToCheck) {
+            window.alert("Another moment and we start playing...");
+            document.getElementById('Login').style.display = 'none';
+            document.getElementById('Settings').style.display = 'block'; ;
+        } else {
+            window.alert("There is mistake");
+        }
+    }
 
 }
 
@@ -28,12 +43,19 @@ function register(){
     document.getElementById('Welcome').style.display = 'none';
     document.getElementById('Login').style.display = 'none';
     document.getElementById('Settings').style.display = 'none';
+    document.getElementById('startGame').style.display = 'none';
     document.getElementById('Register').style.display = 'block';
+}
 
+function Settings(){
+    document.getElementById('Welcome').style.display = 'none';
+    document.getElementById('Login').style.display = 'none';
+    document.getElementById('startGame').style.display = 'none';
+    document.getElementById('Register').style.display = 'none';
+    document.getElementById('Settings').style.display = 'block';
 }
 
 function submit() {
-
     var userName = document.getElementsByName('userName');
     var password = document.getElementsByName('password');
     var firstName = document.getElementsByName('firstName');
@@ -41,8 +63,6 @@ function submit() {
     var email = document.getElementsByName('email');
     var user = new User(userName,password,firstName,lastName,email);
     users.push(user);
-
-
 }
 
 function User (userName, password, firstName, lastName, email, birthday){

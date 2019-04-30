@@ -74,7 +74,6 @@
     padding-left: 2%;
     padding-top: 1.5%;
     padding-bottom: 3%;
-
 }
 
 #registration input{
@@ -82,9 +81,12 @@
     font-family: "Calibri Light", serif;
     width: 30%;
     left: 50%;
+}
 
+#login {
 
 }
+
 
 #footer {
     background-color: yellow;
