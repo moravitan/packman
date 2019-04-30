@@ -7,6 +7,14 @@
 </head>
 
 <body>
+<script type="text/javascript" src="jquery.js"></script>
+
+<script>
+    $(document).ready(function () {
+        start();
+    });
+</script>
+
 <div id="header">
 
 </div><!--end header-->
@@ -29,18 +37,23 @@
     </section>
     <section id="Register">
         <form id="registration">
-            <b>User name: </b> <input type="text" name="userName" value="please enter your user name">
+            User name: <input type="text" id="userName" placeholder="Please enter your user name">
+            <span id="userNameRequired">This field is required </span>
             <br>
-            <b>Password: </b> <input type="password" name="password">
+            Password: <input type="password" id="password" placeholder="Please enter your password">
+            <span id="passwordRequired">This field is required </span>
             <br>
-            <b> First name: </b> <input type="text" name="firstName" value="please enter your first name">
+            First name: <input type="text" id="firstName" placeholder="Please enter your first name">
+            <span id = "firstNameRequired">This field is required </span>
             <br>
-            <b> Last name: </b> <input type="text" name="lastName" value="please enter your last name">
+            Last name:  <input type="text" id="lastName" placeholder="Please enter your last name">
+            <span id="lastNameRequired">This field is required </span>
             <br>
-            <b>Email: </b><input type="text" name="email" value="please enter your email">
+            Email: <input type="text" id="email" placeholder="Please enter your email">
+            <span id = emailRequired>This field is required </span>
             <br>
             <br>
-            <input type="submit" value="Submit" onclick="submit()">
+            <input type="button" id="submit" value="Submit" >
         </form>
 
     </section>
@@ -59,14 +72,7 @@ SCORE:<input id="lblScore" type="text"/>
 TIME: <input id="lblTime" type="text"/>
 <br/>
 <canvas id="canvas" height="505" width="505"></canvas>
-
 <script type="text/javascript" src=javascriptMor.js></script>
-<script type="text/javascript" src="jquery.js"></script>
-<script>
-    $(document).ready(function () {
-        start();
-    });
-</script>
 </body>
 
 </html>
