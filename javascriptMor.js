@@ -36,6 +36,7 @@ function register(){
 
 $("#submit").click(function () {
     var isValid = true;
+
     var userName = $("#userName").val();
     var password = $("#password").val();
     var firstName = $("#firstName").val();
@@ -54,7 +55,7 @@ $("#submit").click(function () {
         $("#firstNameRequired").css("display", "inline-block");
         isValid = false;
     }
-    if (lastName.val().length === 0) {
+    if (lastName.length === 0) {
         $("#lastNameRequired").css("display", "inline-block");
         isValid = false;
     }
@@ -64,6 +65,7 @@ $("#submit").click(function () {
     }
 
     if (isValid){
+
         $("#userNameRequired").css("display", "none");
         $("#passwordRequired").css("display", "none");
         $("#firstNameRequired").css("display", "none");
@@ -71,17 +73,17 @@ $("#submit").click(function () {
         $("#emailRequired").css("display", "none");
 
         var isVerified = true;
+
         if (!firstName.match(/^[A-Za-z]+$/)){
             $("#firstNameRequired").text('Numbers or characters are not allowed here').css("display","inline-block");
             isVerified = false;
         }
-        if (!lastName.val().match(/^[A-Za-z]+$/)){
+        if (!lastName.match(/^[A-Za-z]+$/)){
             $("#lastNameRequired").text('Numbers or characters are not allowed here').css("display","inline-block");
             isVerified = false;
         }
 
         if (!password.match(/^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?).{8,}$/)){
-            alert("oops");
             $("#passwordRequired").text('Password should be at least 8 characters and a combination of letters and numbers').css("display","inline-block");
             isVerified = false;
         }
@@ -90,6 +92,7 @@ $("#submit").click(function () {
             $("#emailRequired").text('Email should be in the format of username@domain.com/.il').css("display", "inline-block");
             isVerified = false;
         }
+
         if (isVerified){
             var isExist = false;
             for (i = 0; i < users.length; i++) {
@@ -102,6 +105,9 @@ $("#submit").click(function () {
                 users.push(user);
                 alert("The registration was successful");
                 showDiv('Welcome');
+            }
+            else{
+                $("#userNameRequired").text("This user name already exist, please choose another one").css("display", "inline-block");
             }
         }
 
