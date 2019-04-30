@@ -24,28 +24,44 @@
 
 <div id="content">
     <section id="Welcome">
-        <button id="loginButton" type="button" onClick="login()"> Login</button>
-        <button id="registerButton" type="button" onClick="register()"> Register</button>
+        <button id="loginButton" type="button" onClick="showDiv('Login')"> Login</button>
+        <button id="registerButton" type="button" onClick="showDiv('Register')"> Register</button>
     </section>
     <section id="Register">
         <form id="registration">
-            <b>User name: </b> <input type="text" name="userName" value="please enter your user name">
+            User name: <input type="text" id="userName" placeholder="Please enter your user name">
+            <span id="userNameRequired">This field is required </span>
             <br>
-            <b>Password: </b> <input type="password" name="password">
+            Password: <input type="password" id="password" placeholder="Please enter your password">
+            <span id="passwordRequired">This field is required </span>
             <br>
-            <b> First name: </b> <input type="text" name="firstName" value="please enter your first name">
+            First name: <input type="text" id="firstName" placeholder="Please enter your first name">
+            <span id = "firstNameRequired">This field is required </span>
             <br>
-            <b> Last name: </b> <input type="text" name="lastName" value="please enter your last name">
+            Last name:  <input type="text" id="lastName" placeholder="Please enter your last name">
+            <span id="lastNameRequired">This field is required </span>
             <br>
-            <b>Email: </b><input type="text" name="email" value="please enter your email">
+            Email: <input type="text" id="email" placeholder="Please enter your email">
+            <span id = emailRequired>This field is required </span>
             <br>
             <br>
-            <input type="submit" value="Submit" onclick="submit()">
+            <input type="button" id="submit" value="Submit" >
         </form>
 
     </section>
-    <section id="Login">355</section>
-    <section id="Settings">356</section>
+    <section id="Login">
+        <b>User name: </b> <input type="text" id="userNameCheck" placeholder="please enter your user name">
+        <br>
+        <br>
+        <b>Password </b> <input type="text" id="PasswordCheck" placeholder="please enter your Password">
+        <br>
+        <br>
+        <button id="Connect" type="button" onClick="checkUser()"> Connect </button>
+
+    </section>
+    <section id="Settings"> setting :) </section>
+
+    <section id="startGame"> start! </section>
 
 </div><!--end content-->
 
