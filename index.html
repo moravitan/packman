@@ -7,6 +7,7 @@
 </head>
 
 <body>
+<script type="text/javascript" src="jquery.js"></script>
 <div id="header">
 
 </div><!--end header-->
@@ -30,22 +31,22 @@
     <section id="Register">
         <form id="registration">
             User name: <input type="text" id="userName" placeholder="Please enter your user name">
-            <span id="userNameRequired">This field is required </span>
+            <span id="userNameRequired">  This field is required </span>
             <br>
             Password: <input type="password" id="password" placeholder="Please enter your password">
-            <span id="passwordRequired">This field is required </span>
+            <span id="passwordRequired">  This field is required </span>
             <br>
             First name: <input type="text" id="firstName" placeholder="Please enter your first name">
-            <span id = "firstNameRequired">This field is required </span>
+            <span id = "firstNameRequired">  This field is required </span>
             <br>
             Last name:  <input type="text" id="lastName" placeholder="Please enter your last name">
-            <span id="lastNameRequired">This field is required </span>
+            <span id="lastNameRequired">  This field is required </span>
             <br>
             Email: <input type="text" id="email" placeholder="Please enter your email">
-            <span id = emailRequired>This field is required </span>
+            <span id = emailRequired>  This field is required </span>
             <br>
             <br>
-            <input type="button" id="submit" value="Submit" >
+            <button type="button" id="submit" >Submit</button>
         </form>
 
     </section>
@@ -53,7 +54,7 @@
         <b>User name: </b> <input type="text" id="userNameCheck" placeholder="please enter your user name">
         <br>
         <br>
-        <b>Password </b> <input type="text" id="PasswordCheck" placeholder="please enter your Password">
+        <b>Password </b> <input type="password" id="PasswordCheck" placeholder="please enter your Password">
         <br>
         <br>
         <button id="Connect" type="button" onClick="checkUser()"> Connect </button>
@@ -77,7 +78,7 @@ TIME: <input id="lblTime" type="text"/>
 <canvas id="canvas" height="505" width="505"></canvas>
 
 <script type="text/javascript" src=javascript.js></script>
-<script type="text/javascript" src="jquery.js"></script>
+
 <script>
     $(document).ready(function () {
         start();

@@ -71,10 +71,14 @@
 }
 
 #registration{
-    padding-left: 2%;
+    max-width: 70%;
+    margin: auto;
+    padding-left: 35%;
     padding-top: 1.5%;
     padding-bottom: 3%;
     font-weight: bold;
+
+
 
 }
 
@@ -83,7 +87,14 @@
     font-family: "Calibri Light", serif;
     width: 30%;
     left: 50%;
+    text-align: center;
+}
 
+#registration button{
+
+    margin-left: 17%;
+    width: 13%;
+    height: 1%;
 
 }
 
