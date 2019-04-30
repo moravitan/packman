@@ -32,8 +32,8 @@
 
 <div id="content">
     <section id="Welcome">
-        <button id="loginButton" type="button" onClick="login()"> Login</button>
-        <button id="registerButton" type="button" onClick="register()"> Register</button>
+        <button id="loginButton" type="button" onClick="showDiv('Login')"> Login</button>
+        <button id="registerButton" type="button" onClick="showDiv('Register')"> Register</button>
     </section>
     <section id="Register">
         <form id="registration">
@@ -53,12 +53,23 @@
             <span id = emailRequired>This field is required </span>
             <br>
             <br>
-            <input type="button" id="submit" value="Submit" >
+            <button type="button" id="submit" >Submit</button>
         </form>
 
     </section>
-    <section id="Login">355</section>
-    <section id="Settings">356</section>
+    <section id="Login">
+        <b>User name: </b> <input type="text" id="userNameCheck" placeholder="please enter your user name">
+        <br>
+        <br>
+        <b>Password </b> <input type="password" id="PasswordCheck" placeholder="please enter your Password">
+        <br>
+        <br>
+        <button id="Connect" type="button" onClick="checkUser()"> Connect </button>
+
+    </section>
+    <section id="Settings"> setting :) </section>
+
+    <section id="startGame"> start! </section>
 
 </div><!--end content-->
 

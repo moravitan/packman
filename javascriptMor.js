@@ -14,25 +14,10 @@ function showDiv(id){
     document.getElementById('Register').style.display = 'none';
     document.getElementById('Login').style.display = 'none';
     document.getElementById('Settings').style.display = 'none';
+    document.getElementById('startGame').style.display = 'none';
     document.getElementById(id).style.display = 'block';
+    $("input").val('');
 }
-
-function login(){
-    document.getElementById('Welcome').style.display = 'none';
-    document.getElementById('Register').style.display = 'none';
-    document.getElementById('Settings').style.display = 'none';
-    document.getElementById('Login').style.display = 'block';
-
-}
-
-function register(){
-    document.getElementById('Welcome').style.display = 'none';
-    document.getElementById('Login').style.display = 'none';
-    document.getElementById('Settings').style.display = 'none';
-    document.getElementById('Register').style.display = 'block';
-
-}
-
 
 $("#submit").click(function () {
     var isValid = true;
@@ -122,6 +107,23 @@ function User (userName, password, firstName, lastName, email, birthday){
     this.lastName = lastName;
     this.email = email;
     this.birthday = birthday;
+
+}
+
+
+
+function checkUser() {
+    var passwordToCheck = document.getElementById("PasswordCheck").value;
+    var userToCheck = document.getElementById("userNameCheck").value;
+    for (var i = 0; i < users.length; i++) {
+        if (users[i].userName === userToCheck && users[i].password === passwordToCheck) {
+            window.alert("Another moment and we start playing...");
+            document.getElementById('Login').style.display = 'none';
+            document.getElementById('Settings').style.display = 'block';
+            return;
+        }
+    }
+    window.alert("There is mistake");
 
 }
 

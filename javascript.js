@@ -9,12 +9,14 @@ function start(){
 
 
 function showDiv(id){
+
     document.getElementById('Welcome').style.display = 'none';
     document.getElementById('Register').style.display = 'none';
     document.getElementById('Login').style.display = 'none';
     document.getElementById('Settings').style.display = 'none';
     document.getElementById('startGame').style.display = 'none';
     document.getElementById(id).style.display = 'block';
+    $("input").val('');
 }
 
 $("#submit").click(function () {
@@ -28,6 +30,7 @@ $("#submit").click(function () {
 
     if (userName.length === 0) {
         $("#userNameRequired").css("display", "inline-block");
+        $("#userName").css("border","2px solid red");
         isValid = false;
     }
     if (password.length === 0) {
@@ -112,16 +115,16 @@ function User (userName, password, firstName, lastName, email, birthday){
 
 function checkUser() {
     var passwordToCheck = document.getElementById("PasswordCheck").value;
-    var userToCheck = document.getElementById("PasswordCheck").value;
+    var userToCheck = document.getElementById("userNameCheck").value;
     for (var i = 0; i < users.length; i++) {
         if (users[i].userName === userToCheck && users[i].password === passwordToCheck) {
             window.alert("Another moment and we start playing...");
             document.getElementById('Login').style.display = 'none';
-            document.getElementById('Settings').style.display = 'block'; ;
-        } else {
-            window.alert("There is mistake");
+            document.getElementById('Settings').style.display = 'block';
+            return;
         }
     }
+    window.alert("There is mistake");
 
 }
 
