@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> Yuv & Mor </title>
+    <link rel="stylesheet" type="text/css" href="styleMor.css">
+</head>
+
+<body>
+<div id="header">
+
+</div><!--end header-->
+
+<div id="menu">
+    <ul>
+        <li><a href="#" onClick="showDiv('Welcome')"> Welcome </a></li>
+        <li><a href="#" onClick="showDiv('Register')"> Register </a></li>
+        <li><a href="#" onClick="showDiv('Login')"> login </a></li>
+        <li><a href="#" onClick="showDiv('Settings')"> Settings </a></li>
+        <li><a href="#"> About </a></li>
+    </ul>
+
+</div><!--end menu-->
+
+<div id="content">
+    <section id="Welcome">
+        <button id="loginButton" type="button" onClick="login()"> Login</button>
+        <button id="registerButton" type="button" onClick="register()"> Register</button>
+    </section>
+    <section id="Register">
+        <form id="registration">
+            <b>User name: </b> <input type="text" name="userName" value="please enter your user name">
+            <br>
+            <b>Password: </b> <input type="password" name="password">
+            <br>
+            <b> First name: </b> <input type="text" name="firstName" value="please enter your first name">
+            <br>
+            <b> Last name: </b> <input type="text" name="lastName" value="please enter your last name">
+            <br>
+            <b>Email: </b><input type="text" name="email" value="please enter your email">
+            <br>
+            <br>
+            <input type="submit" value="Submit" onclick="submit()">
+        </form>
+
+    </section>
+    <section id="Login">355</section>
+    <section id="Settings">356</section>
+
+</div><!--end content-->
+
+
+<div id="footer">
+
+</div><!--end header-->
+
+SCORE:<input id="lblScore" type="text"/>
+<br/>
+TIME: <input id="lblTime" type="text"/>
+<br/>
+<canvas id="canvas" height="505" width="505"></canvas>
+
+<script type="text/javascript" src=javascriptMor.js></script>
+<script type="text/javascript" src="jquery.js"></script>
+<script>
+    $(document).ready(function () {
+        start();
+    });
+</script>
+</body>
+
+</html>
