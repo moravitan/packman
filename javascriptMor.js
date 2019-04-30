@@ -64,7 +64,32 @@ $("#submit").click(function () {
     }
 
     if (isValid){
-        var isVerified = isVerified(password,firstName,lastName,email);
+        $("#userNameRequired").css("display", "none");
+        $("#passwordRequired").css("display", "none");
+        $("#firstNameRequired").css("display", "none");
+        $("#lastNameRequired").css("display", "none");
+        $("#emailRequired").css("display", "none");
+
+        var isVerified = true;
+        if (!firstName.match(/^[A-Za-z]+$/)){
+            $("#firstNameRequired").text('Numbers or characters are not allowed here').css("display","inline-block");
+            isVerified = false;
+        }
+        if (!lastName.val().match(/^[A-Za-z]+$/)){
+            $("#lastNameRequired").text('Numbers or characters are not allowed here').css("display","inline-block");
+            isVerified = false;
+        }
+
+        if (!password.match(/^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?).{8,}$/)){
+            alert("oops");
+            $("#passwordRequired").text('Password should be at least 8 characters and a combination of letters and numbers').css("display","inline-block");
+            isVerified = false;
+        }
+        var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        if (!regex.test(email)) {
+            $("#emailRequired").text('Email should be in the format of username@domain.com/.il').css("display", "inline-block");
+            isVerified = false;
+        }
         if (isVerified){
             var isExist = false;
             for (i = 0; i < users.length; i++) {
@@ -82,35 +107,6 @@ $("#submit").click(function () {
 
     }
 });
-
-function isVerified(password,firstName,lastName,email){
-    var isVerified = true;
-    $("#userNameRequired").css("display", "none");
-    $("#passwordRequired").css("display", "none");
-    $("#firstNameRequired").css("display", "none");
-    $("#lastNameRequired").css("display", "none");
-    $("#emailRequired").css("display", "none");
-
-    if (!firstName.match(/^[A-Za-z]+$/)){
-        $("#firstNameRequired").text('Numbers or characters are not allowed here').css("display","inline-block");
-        isVerified = false;
-    }
-    if (!lastName.val().match(/^[A-Za-z]+$/)){
-        $("#lastNameRequired").text('Numbers or characters are not allowed here').css("display","inline-block");
-        isVerified = false;
-    }
-
-    if (!password.match(/^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?).{8,}$/)){
-        $("#passwordRequired").text('Password should be at least 8 characters and a combination of letters and numbers').css("display","inline-block");
-        isVerified = false;
-    }
-    var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    if (!regex.test(email)) {
-        $("#emailRequired").text('Email should be in the format of username@domain.com/.il').css("display", "inline-block");
-        isVerified = false;
-    }
-    return isVerified;
-}
 
 
 function User (userName, password, firstName, lastName, email, birthday){
