@@ -9,7 +9,7 @@
 <body>
 <script type="text/javascript" src="jquery.js"></script>
 <div id="header">
-
+    <li style="padding-left: 0px "> <img class="logo" src="pic1.png" width=200px; height=110px; top="0"; ></img> </li>
 </div><!--end header-->
 
 <div id="menu">
@@ -18,46 +18,75 @@
         <li><a href="#" onClick="showDiv('Register')"> Register </a></li>
         <li><a href="#" onClick="showDiv('Login')"> login </a></li>
         <li><a href="#" onClick="showDiv('Settings')"> Settings </a></li>
-        <li><a href="#"> About </a></li>
+        <li><a href="#" onclick="showAboutDialog()"> About </a></li>
     </ul>
-
 </div><!--end menu-->
 
 <div id="content">
     <section id="Welcome">
-        <button id="loginButton" type="button" onClick="login()"> Login</button>
-        <button id="registerButton" type="button" onClick="register()"> Register</button>
+        <button id="loginButton" class="Buttons" type="button" onClick="showDiv('Login')"> Login</button>
+        <button id="registerButton" class="Buttons" type="button" onClick="showDiv('Register')"> Register</button>
     </section>
+
+
     <section id="Register">
         <form id="registration">
-            <b>User name: </b> <input type="text" name="userName" value="please enter your user name">
+            <h1>Registration</h1>
             <br>
-            <b>Password: </b> <input type="password" name="password">
+            User name: <input type="text" class="text" id="userName" placeholder="Please enter your user name">
+            <span id="userNameRequired">  This field is required </span>
             <br>
-            <b> First name: </b> <input type="text" name="firstName" value="please enter your first name">
+            Password: <input type="password" class="text" id="password" placeholder="Please enter your password">
+            <span id="passwordRequired">  This field is required </span>
             <br>
-            <b> Last name: </b> <input type="text" name="lastName" value="please enter your last name">
+            First name: <input type="text" class="text" id="firstName" placeholder="Please enter your first name">
+            <span id = "firstNameRequired">  This field is required </span>
             <br>
-            <b>Email: </b><input type="text" name="email" value="please enter your email">
+            Last name:  <input type="text" class="text" id="lastName" placeholder="Please enter your last name">
+            <span id="lastNameRequired">  This field is required </span>
+            <br>
+            Email: <input type="text" class="text" id="email" placeholder="Please enter your email">
+            <span id = emailRequired>  This field is required </span>
             <br>
             <br>
-            <input type="submit" value="Submit" onclick="submit()">
+            <button type="button" id="submit" >Submit</button>
         </form>
-
     </section>
+
+
     <section id="Login">
-        <b>User name: </b> <input type="text" id="userNameCheck" placeholder="please enter your user name">
+        <h1>Login</h1>
+        <b>User name: </b> <input type="text" class="text" id="userNameCheck" placeholder="please enter your user name">
         <br>
         <br>
-        <b>Password </b> <input type="text" id="PasswordCheck" placeholder="please enter your Password">
+        <b>Password </b> <input type="password" class="text" id="PasswordCheck" placeholder="please enter your Password">
         <br>
         <br>
         <button id="Connect" type="button" onClick="checkUser()"> Connect </button>
-
     </section>
-    <section id="Settings"> setting :) </section>
 
-    <section id="startGame"> start! </section>
+
+    <section id="Settings">
+        <h1>Settings</h1>
+    </section>
+
+
+    <dialog id="aboutDialog" style="text-align: left;">
+        <h1>About</h1>
+        <div class="dialog">
+            <span> Submit: Kill Me Now!!!!!
+                <br>
+                <br>
+            </span>
+        </div>
+        <button onclick="closeAboutDialog()" id="buttonClose" type="button">close</button>
+    </dialog>
+
+
+    <section id="startGame">
+        start!
+    </section>
+
 </div><!--end content-->
 
 
