@@ -7,63 +7,99 @@ function start(){
     showDiv('Welcome');
 }
 
+
 function showDiv(id){
+
     document.getElementById('Welcome').style.display = 'none';
     document.getElementById('Register').style.display = 'none';
     document.getElementById('Login').style.display = 'none';
     document.getElementById('Settings').style.display = 'none';
     document.getElementById('startGame').style.display = 'none';
     document.getElementById(id).style.display = 'block';
+    $("input").val('');
 }
 
-function login(){
-    document.getElementById('Welcome').style.display = 'none';
-    document.getElementById('Register').style.display = 'none';
-    document.getElementById('Settings').style.display = 'none';
-    document.getElementById('startGame').style.display = 'none';
-    document.getElementById('Login').style.display = 'block';
-}
+$("#submit").click(function () {
+    var isValid = true;
 
-function checkUser() {
-    var passwordToCheck = document.getElementById("PasswordCheck").value;
-    var userToCheck = document.getElementById("PasswordCheck").value;
-    for (var i = 0; i < users.length; i++) {
-        if (users[i].userName === userToCheck && users[i].password === passwordToCheck) {
-            window.alert("Another moment and we start playing...");
-            document.getElementById('Login').style.display = 'none';
-            document.getElementById('Settings').style.display = 'block'; ;
-        } else {
-            window.alert("There is mistake");
-        }
+    var userName = $("#userName").val();
+    var password = $("#password").val();
+    var firstName = $("#firstName").val();
+    var lastName = $("#lastName").val();
+    var email = $("#email").val();
+
+    if (userName.length === 0) {
+        $("#userNameRequired").css("display", "inline-block");
+        $("#userName").css("border","2px solid red");
+        isValid = false;
+    }
+    if (password.length === 0) {
+        $("#passwordRequired").css("display", "inline-block");
+        isValid = false;
+    }
+    if (firstName.length === 0) {
+        $("#firstNameRequired").css("display", "inline-block");
+        isValid = false;
+    }
+    if (lastName.length === 0) {
+        $("#lastNameRequired").css("display", "inline-block");
+        isValid = false;
+    }
+    if (email.length === 0) {
+        $("#emailRequired").css("display", "inline-block");
+        isValid = false;
     }
 
-}
+    if (isValid){
 
-function register(){
-    document.getElementById('Welcome').style.display = 'none';
-    document.getElementById('Login').style.display = 'none';
-    document.getElementById('Settings').style.display = 'none';
-    document.getElementById('startGame').style.display = 'none';
-    document.getElementById('Register').style.display = 'block';
-}
+        $("#userNameRequired").css("display", "none");
+        $("#passwordRequired").css("display", "none");
+        $("#firstNameRequired").css("display", "none");
+        $("#lastNameRequired").css("display", "none");
+        $("#emailRequired").css("display", "none");
 
-function Settings(){
-    document.getElementById('Welcome').style.display = 'none';
-    document.getElementById('Login').style.display = 'none';
-    document.getElementById('startGame').style.display = 'none';
-    document.getElementById('Register').style.display = 'none';
-    document.getElementById('Settings').style.display = 'block';
-}
+        var isVerified = true;
 
-function submit() {
-    var userName = document.getElementsByName('userName');
-    var password = document.getElementsByName('password');
-    var firstName = document.getElementsByName('firstName');
-    var lastName = document.getElementsByName('lastName');
-    var email = document.getElementsByName('email');
-    var user = new User(userName,password,firstName,lastName,email);
-    users.push(user);
-}
+        if (!firstName.match(/^[A-Za-z]+$/)){
+            $("#firstNameRequired").text('Numbers or characters are not allowed here').css("display","inline-block");
+            isVerified = false;
+        }
+        if (!lastName.match(/^[A-Za-z]+$/)){
+            $("#lastNameRequired").text('Numbers or characters are not allowed here').css("display","inline-block");
+            isVerified = false;
+        }
+
+        if (!password.match(/^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?).{8,}$/)){
+            $("#passwordRequired").text('Password should be at least 8 characters and a combination of letters and numbers').css("display","inline-block");
+            isVerified = false;
+        }
+        var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        if (!regex.test(email)) {
+            $("#emailRequired").text('Email should be in the format of username@domain.com/.il').css("display", "inline-block");
+            isVerified = false;
+        }
+
+        if (isVerified){
+            var isExist = false;
+            for (i = 0; i < users.length; i++) {
+                if (users[i].userName === userName) {
+                    isExist = true;
+                }
+            }
+            if (!isExist){
+                var user = new User(userName,password,firstName,lastName,email,"birthday");
+                users.push(user);
+                alert("The registration was successful");
+                showDiv('Welcome');
+            }
+            else{
+                $("#userNameRequired").text("This user name already exist, please choose another one").css("display", "inline-block");
+            }
+        }
+
+    }
+});
+
 
 function User (userName, password, firstName, lastName, email, birthday){
     this.userName = userName;
@@ -71,8 +107,30 @@ function User (userName, password, firstName, lastName, email, birthday){
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
-    //this.birthday = birthday;
+    this.birthday = birthday;
 
+}
+
+function showAboutDialog() {
+    document.getElementById("aboutDialog").showModal();
+}
+function closeAboutDialog() {
+    document.getElementById("aboutDialog").close();
+}
+
+
+function checkUser() {
+    var passwordToCheck = document.getElementById("PasswordCheck").value;
+    var userToCheck = document.getElementById("userNameCheck").value;
+    for (var i = 0; i < users.length; i++) {
+        if (users[i].userName === userToCheck && users[i].password === passwordToCheck) {
+            window.alert("Another moment and we start playing...");
+            document.getElementById('Login').style.display = 'none';
+            document.getElementById('Settings').style.display = 'block';
+            return;
+        }
+    }
+    window.alert("There is mistake");
 }
 
 /*
