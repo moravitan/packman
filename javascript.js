@@ -35,18 +35,22 @@ $("#submit").click(function () {
     }
     if (password.length === 0) {
         $("#passwordRequired").css("display", "inline-block");
+        $("#password").css("border","2px solid red");
         isValid = false;
     }
     if (firstName.length === 0) {
         $("#firstNameRequired").css("display", "inline-block");
+        $("#firstName").css("border","2px solid red");
         isValid = false;
     }
     if (lastName.length === 0) {
         $("#lastNameRequired").css("display", "inline-block");
+        $("#lastName").css("border","2px solid red");
         isValid = false;
     }
     if (email.length === 0) {
         $("#emailRequired").css("display", "inline-block");
+        $("#email").css("border","2px solid red");
         isValid = false;
     }
 
