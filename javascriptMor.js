@@ -158,6 +158,13 @@ function checkUser() {
 
 }
 
+function showAboutDialog() {
+    document.getElementById("aboutDialog").showModal();
+}
+function closeAboutDialog() {
+    document.getElementById("aboutDialog").close();
+}
+
 // get up button
 $("#up").keydown(function (event) {
     upButton = String.fromCharCode(event.which);

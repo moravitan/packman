@@ -3,12 +3,13 @@
 
 <head>
     <title> Yuv & Mor </title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="styleYuval.css">
 </head>
 
 <body>
 <script type="text/javascript" src="jquery.js"></script>
 <div id="header">
+    <li style="padding-left: 0px "> <img class="logo" src="logo.png" width=200px; height=110px; top="0"; ></img> </li>
 
 </div><!--end header-->
 
@@ -18,54 +19,103 @@
         <li><a href="#" onClick="showDiv('Register')"> Register </a></li>
         <li><a href="#" onClick="showDiv('Login')"> login </a></li>
         <li><a href="#" onClick="showDiv('Settings')"> Settings </a></li>
-        <li><a href="#"> About </a></li>
+        <li><a href="#" onclick="showAboutDialog()"> About </a></li>
     </ul>
 
 </div><!--end menu-->
 
 <div id="content">
     <section id="Welcome">
-        <button id="loginButton" type="button" onClick="showDiv('Login')"> Login</button>
-        <button id="registerButton" type="button" onClick="showDiv('Register')"> Register</button>
+        <button id="loginButton" class="Buttons" type="button" onClick="showDiv('Login')"> Login</button>
+        <button id="registerButton" class="Buttons" type="button" onClick="showDiv('Register')"> Register</button>
     </section>
+
+
     <section id="Register">
         <form id="registration">
-            User name: <input type="text" id="userName" placeholder="Please enter your user name">
+            <h1>Registration</h1>
+            <br>
+            User name: <input type="text" class="text" id="userName" placeholder="Please enter your user name">
             <span id="userNameRequired">  This field is required </span>
             <br>
-            Password: <input type="password" id="password" placeholder="Please enter your password">
+            Password: <input type="password" class="text" id="password" placeholder="Please enter your password">
             <span id="passwordRequired">  This field is required </span>
             <br>
-            First name: <input type="text" id="firstName" placeholder="Please enter your first name">
+            First name: <input type="text" class="text" id="firstName" placeholder="Please enter your first name">
             <span id = "firstNameRequired">  This field is required </span>
             <br>
-            Last name:  <input type="text" id="lastName" placeholder="Please enter your last name">
+            Last name:  <input type="text" class="text" id="lastName" placeholder="Please enter your last name">
             <span id="lastNameRequired">  This field is required </span>
             <br>
-            Email: <input type="text" id="email" placeholder="Please enter your email">
+            Email: <input type="text" class="text" id="email" placeholder="Please enter your email">
             <span id = emailRequired>  This field is required </span>
             <br>
             <br>
             <button type="button" id="submit" >Submit</button>
         </form>
     </section>
+
+
     <section id="Login">
-        <b>User name: </b> <input type="text" id="userNameCheck" placeholder="please enter your user name">
+        <h1>Login</h1>
+        <b>User name: </b> <input type="text" class="text" id="userNameCheck" placeholder="please enter your user name">
         <br>
         <br>
-        <b>Password </b> <input type="password" id="PasswordCheck" placeholder="please enter your Password">
+        <b>Password </b> <input type="password" class="text" id="PasswordCheck" placeholder="please enter your Password">
         <br>
         <br>
         <button id="Connect" type="button" onClick="checkUser()"> Connect </button>
     </section>
 
     <section id="Settings">
-        <p> Choose Your Buttons </p>
-
-
-
-
+        <h1>Settings</h1>
+        <div id="leftScreen">
+            <p> Choose Your Buttons </p><br><br><br>
+            <p> Food Amount: </p>
+            <p> Monster Amount:</p>
+            <p> Game Time:</p>
+            <p> 5 point color:</p>
+            <p> 15 point color:</p>
+            <p> 25 point color:</p>
+        </div>
+        <div id="rightScreen">
+            <br>
+            <input type="text" id="up" placeholder="Up button" maxlength="1">
+            <br>
+            <input type="text" id="left" placeholder="Left button" maxlength="1">
+            <br>
+            <input type="text" id="down" placeholder="down button" maxlength="1">
+            <br>
+            <input type="text" id="right"  placeholder="right button" maxlength="1">
+            <br><br>
+            <input type="number" id="ballsAmount" class="property" min="50" max="90" value="50">
+            <br>
+            <input type="number" id="monsterAmount" class="property" min="1"  max="3">
+            <br>
+            <input type="number" id="gameTime" class="property" min="60">
+            <br>
+            <input type="color" id="5Points" value="#FAEBD7">
+            <br>
+            <input type="color" id="15Points" value="#7FFFD4">
+            <br>
+            <input type="color" id="25Points" value="#BA55D3">
+        </div>
+        <div id="buttons">
+            <button type="button" id="start"> Start </button>
+            <button type="button" id="random"> Random </button>
+        </div>
     </section>
+
+    <dialog id="aboutDialog" style="text-align: left;">
+        <h1>About</h1>
+        <div class="dialog">
+            <span> Submit: Kill Me Now!!!!!
+                <br>
+                <br>
+            </span>
+        </div>
+        <button onclick="closeAboutDialog()" id="buttonClose" type="button">close</button>
+    </dialog>
 
     <section id="startGame"> start! </section>
 
