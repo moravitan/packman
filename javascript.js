@@ -290,15 +290,12 @@ $("#start").click(function () {
     }
     if (ballsAmount !== '' && (ballsAmount < 50 || ballsAmount > 90)){
         isValid = false;
-        $("#balls").css("display","inline-block").css("color","red").css("font-weight","bold");
     }
     if (monsterAmount !== '' && (monsterAmount < 1 || monsterAmount > 3)){
         isValid = false;
-        $("#monster").css("display","inline-block").css("color","red").css("font-weight","bold");
     }
     if (time !== '' && time < 60){
         isValid = false;
-        $("#time").css("display","inline-block").css("color","red").css("font-weight","bold");
     }
 
     if (isValid) {
