@@ -1,6 +1,22 @@
 
 var users = []; // arrays of registers users
 
+// game's buttons
+var upButton;
+var leftButton;
+var rightButton;
+var downButton;
+
+// game's configuration
+var ballsAmount;
+var monsterAmount;
+var time;
+var fivePointColor;
+var fifteenPointColor;
+var twentyfivePointColor;
+
+
+
 function start(){
     var user = new User("a","a","a","a","a@a","4");
     users.push(user);
@@ -16,7 +32,17 @@ function showDiv(id){
     document.getElementById('Settings').style.display = 'none';
     document.getElementById('startGame').style.display = 'none';
     document.getElementById(id).style.display = 'block';
-    $("input").val('');
+    if (id !== 'Settings'){
+        $("input").val('');
+    }
+    else{
+        $("#ballsAmount").val('50');
+        $("#monsterAmount").val('1');
+        $("#gameTime").val('60');
+        $("#5Points").val("#FAEBD7");
+        $("#15Points").val("#7FFFD4");
+        $("#25Points").val("#BA55D3");
+    }
 }
 
 $("#submit").click(function () {
@@ -131,6 +157,191 @@ function checkUser() {
     window.alert("There is mistake");
 
 }
+
+function showAboutDialog() {
+    document.getElementById("aboutDialog").showModal();
+}
+function closeAboutDialog() {
+    document.getElementById("aboutDialog").close();
+}
+
+// get up button
+$("#up").keydown(function (event) {
+    upButton = String.fromCharCode(event.which);
+    $("#up").text('');
+    if (upButton === "&"){
+        $("#up").val("Arrow UP was chosen");
+        return;
+    }
+    if (upButton === "'"){
+        $("#up").val("Arrow RIGHT was chosen");
+        return;
+    }
+    if (upButton === "("){
+        $("#up").val("Arrow DOWN was chosen");
+        return;
+    }
+    if (upButton === "%"){
+        $("#up").val("Arrow LEFT was chosen");
+        return;
+    }
+    $("#up").val(upButton + " was chosen");
+});
+
+//get left button
+$("#left").keydown(function (event) {
+    leftButton = String.fromCharCode(event.which);
+    $("#left").text('');
+    if (leftButton === "&"){
+        $("#left").val("Arrow UP was chosen");
+        return;
+    }
+    if (leftButton === "'"){
+        $("#left").val("Arrow RIGHT was chosen");
+        return;
+    }
+    if (leftButton === "("){
+        $("#left").val("Arrow DOWN was chosen");
+        return;
+    }
+    if (leftButton === "%"){
+        $("#left").val("Arrow LEFT was chosen");
+        return;
+    }
+    $("#left").val(leftButton + " was chosen");
+});
+
+// get right button
+$("#right").keydown(function (event) {
+    rightButton = String.fromCharCode(event.which);
+    $("#right").text('');
+    if (rightButton === "&"){
+        $("#right").val("Arrow UP was chosen");
+        return;
+    }
+    if (rightButton === "'"){
+        $("#right").val("Arrow RIGHT was chosen");
+        return;
+    }
+    if (rightButton === "("){
+        $("#right").val("Arrow DOWN was chosen");
+        return;
+    }
+    if (rightButton === "%"){
+        $("#right").val("Arrow LEFT was chosen");
+        return;
+    }
+    $("#right").val(rightButton + " was chosen");
+});
+
+// get down button
+$("#down").keydown(function (event) {
+    downButton = String.fromCharCode(event.which);
+    $("#down").text('');
+    if (downButton === "&"){
+        $("#down").val("Arrow UP was chosen");
+        return;
+    }
+    if (downButton === "'"){
+        $("#down").val("Arrow RIGHT was chosen");
+        return;
+    }
+    if (downButton === "("){
+        $("#down").val("Arrow DOWN was chosen");
+        return;
+    }
+    if (downButton === "%"){
+        $("#down").val("Arrow LEFT was chosen");
+        return;
+    }
+    $("#down").val(downButton + " was chosen");
+});
+
+
+
+$("#start").click(function () {
+    $("#left").css("border","");
+    $("#up").css("border","");
+    $("#right").css("border","");
+    $("#down").css("border","");
+    var isValid = true;
+    // checkArrowsPressed();
+    ballsAmount = $("#ballsAmount").val();
+    monsterAmount = $("#monsterAmount").val();
+    time = $("#gameTime").val();
+    fivePointColor = $("#5Points");
+    fifteenPointColor = $("#15Points");
+    twentyfivePointColor = $("#25Points");
+    if (leftButton === undefined){
+        $("#left").css("border","2px solid red");
+        isValid = false;
+    }
+    if (downButton === undefined ){
+        $("#down").css("border","2px solid red");
+        isValid = false;
+    }
+    if(rightButton === undefined){
+        $("#right").css("border","2px solid red");
+        isValid = false;
+    }
+    if (upButton === undefined){
+        $("#up").css("border","2px solid red");
+        isValid = false;
+    }
+    if (ballsAmount !== '' && (ballsAmount < 50 || ballsAmount > 90)){
+        isValid = false;
+        $("#balls").css("display","inline-block").css("color","red").css("font-weight","bold");
+    }
+    if (monsterAmount !== '' && (monsterAmount < 1 || monsterAmount > 3)){
+        isValid = false;
+        $("#monster").css("display","inline-block").css("color","red").css("font-weight","bold");
+    }
+    if (time !== '' && time < 60){
+        isValid = false;
+        $("#time").css("display","inline-block").css("color","red").css("font-weight","bold");
+    }
+
+    if (isValid) {
+        showDiv('startGame')
+    }
+});
+
+$("#random").click(function () {
+    $("#monsterAmount").val(Math.floor( Math.random() * (4-1) + 1));
+    $("#ballsAmount").val(Math.floor(Math.random() * (91 - 50) + 50));
+    $("#gameTime").val(Math.floor(Math.random() * (600 - 60) + 60));
+    $("#left").val("Arrow LEFT was chosen");
+    $("#up").val("Arrow UP was chosen");
+    $("#down").val("Arrow DOWN was chosen");
+    $("#right").val("Arrow RIGHT was chosen");
+    leftButton = "%";
+    upButton = "&";
+    rightButton = "'";
+    downButton = "(";
+    while (true) {
+        var color5Point = getRandomColor();
+        var color15Point = getRandomColor();
+        var color25Point = getRandomColor();
+        if (color5Point !== color15Point || color5Point !== color25Point || color15Point !== color5Point) {
+            $("#5Points").val(color5Point);
+            $("#15Points").val(color15Point);
+            $("#25Points").val(color25Point);
+            break;
+        }
+    }
+
+});
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+
 
 /*
 var context = canvas.getContext("2d");
