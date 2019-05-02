@@ -8,15 +8,8 @@
 
 <body>
 <script type="text/javascript" src="jquery.js"></script>
-
-<script>
-    $(document).ready(function () {
-        start();
-    });
-
-</script>
-
 <div id="header">
+    <li style="padding-left: 0px "> <img class="logo" src="logo.png" width=200px; height=110px; top="0"; ></img> </li>
 
 </div><!--end header-->
 
@@ -26,51 +19,58 @@
         <li><a href="#" onClick="showDiv('Register')"> Register </a></li>
         <li><a href="#" onClick="showDiv('Login')"> login </a></li>
         <li><a href="#" onClick="showDiv('Settings')"> Settings </a></li>
-        <li><a href="#"> About </a></li>
+        <li><a href="#" onclick="showAboutDialog()"> About </a></li>
     </ul>
 
 </div><!--end menu-->
 
 <div id="content">
     <section id="Welcome">
-        <button id="loginButton" type="button" onClick="showDiv('Login')"> Login</button>
-        <button id="registerButton" type="button" onClick="showDiv('Register')"> Register</button>
+        <button id="loginButton" class="Buttons" type="button" onClick="showDiv('Login')"> Login</button>
+        <button id="registerButton" class="Buttons" type="button" onClick="showDiv('Register')"> Register</button>
     </section>
+
+
     <section id="Register">
         <form id="registration">
-            User name: <input type="text" id="userName" placeholder="Please enter your user name">
-            <span id="userNameRequired">This field is required </span>
+            <h1>Registration</h1>
             <br>
-            Password: <input type="password" id="password" placeholder="Please enter your password">
-            <span id="passwordRequired">This field is required </span>
+            User name: <input type="text" class="text" id="userName" placeholder="Please enter your user name">
+            <span id="userNameRequired">  This field is required </span>
             <br>
-            First name: <input type="text" id="firstName" placeholder="Please enter your first name">
-            <span id = "firstNameRequired">This field is required </span>
+            Password: <input type="password" class="text" id="password" placeholder="Please enter your password">
+            <span id="passwordRequired">  This field is required </span>
             <br>
-            Last name:  <input type="text" id="lastName" placeholder="Please enter your last name">
-            <span id="lastNameRequired">This field is required </span>
+            First name: <input type="text" class="text" id="firstName" placeholder="Please enter your first name">
+            <span id = "firstNameRequired">  This field is required </span>
             <br>
-            Email: <input type="text" id="email" placeholder="Please enter your email">
-            <span id = emailRequired>This field is required </span>
+            Last name:  <input type="text" class="text" id="lastName" placeholder="Please enter your last name">
+            <span id="lastNameRequired">  This field is required </span>
+            <br>
+            Email: <input type="text" class="text" id="email" placeholder="Please enter your email">
+            <span id = emailRequired>  This field is required </span>
             <br>
             <br>
             <button type="button" id="submit" >Submit</button>
         </form>
     </section>
+
+
     <section id="Login">
-        <b>User name: </b> <input type="text" id="userNameCheck" placeholder="please enter your user name">
+        <h1>Login</h1>
+        <b>User name: </b> <input type="text" class="text" id="userNameCheck" placeholder="please enter your user name">
         <br>
         <br>
-        <b>Password </b> <input type="password" id="PasswordCheck" placeholder="please enter your Password">
+        <b>Password </b> <input type="password" class="text" id="PasswordCheck" placeholder="please enter your Password">
         <br>
         <br>
         <button id="Connect" type="button" onClick="checkUser()"> Connect </button>
-
     </section>
+
     <section id="Settings">
-        <h2>Settings</h2>
+        <h1>Settings</h1>
         <div id="leftScreen">
-            <p> Choose Your Buttons </p><br><br><br>
+            <p> Choose Your Buttons: </p><br><br><br>
             <p> Food Amount: </p>
             <p> Monster Amount:</p>
             <p> Game Time:</p>
@@ -79,7 +79,6 @@
             <p> 25 point color:</p>
         </div>
         <div id="rightScreen">
-            <br>
             <input type="text" id="up" placeholder="Up button" maxlength="1">
             <br>
             <input type="text" id="left" placeholder="Left button" maxlength="1">
@@ -102,9 +101,20 @@
         </div>
         <div id="buttons">
             <button type="button" id="start"> Start </button>
-            <button type="button" id="random"> Random </button>
+            <button type="button"   id="random"> Random </button>
         </div>
     </section>
+
+    <dialog id="aboutDialog" style="text-align: left;">
+        <h1>About</h1>
+        <div class="dialog">
+            <span> Submit: Kill Me Now!!!!!
+                <br>
+                <br>
+            </span>
+        </div>
+        <button onclick="closeAboutDialog()" id="buttonClose" type="button">close</button>
+    </dialog>
 
     <section id="startGame"> start! </section>
 
@@ -120,7 +130,14 @@ SCORE:<input id="lblScore" type="text"/>
 TIME: <input id="lblTime" type="text"/>
 <br/>
 <canvas id="canvas" height="505" width="505"></canvas>
+
 <script type="text/javascript" src=javascriptMor.js></script>
+
+<script>
+    $(document).ready(function () {
+        start();
+    });
+</script>
 </body>
 
 </html>
