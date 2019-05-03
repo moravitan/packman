@@ -95,12 +95,14 @@ button.text, input.text{
 
 #registration{
     max-width: 70%;
-    margin: auto;
+    /*margin: auto;*/
+    margin-left: 3%;
     padding-left: 10%;
     padding-top: 1.5%;
     padding-bottom: 3%;
     font-weight: bold;
     text-align: center;
+
 }
 
 #registration input{
@@ -110,6 +112,8 @@ button.text, input.text{
     left: 50%;
     text-align: center;
 }
+
+
 
 #registration button{
     margin-left: 17%;
@@ -126,6 +130,10 @@ button.text, input.text{
     display: none;
     color: red;
     font-weight: bold;
+}
+
+.birthday{
+    margin-bottom: 1%;
 }
 
 #aboutDialog {
@@ -191,6 +199,18 @@ button.text, input.text{
     display: inline;
     left: 43%;
 
+
+}
+
+.smallButtons{
+    background-color: rgb(153, 153, 255);
+    color: white;
+    border: none;
+    text-align: center;
+    font-size: 15px;
+    display: inline-block;
+    cursor: pointer;
+    font-family: "Comic Sans MS";
 }
 
 /*#Settings #start{
@@ -201,6 +221,34 @@ button.text, input.text{
 #Settings #random{
     margin-top: 2%;
 }*/
+
+#startGame #canvas{
+    position: absolute;
+    top: 5%;
+    height: 90%;
+    width: 60%;
+    background: white;
+    margin-left: 20%;
+    border: 2px solid red;
+}
+
+#startGame #gameDetails{
+    top:2%;
+    position: absolute;
+    padding: 1%;
+    /*background: aliceblue;*/
+}
+
+.scores{
+    display: inline-block;
+}
+
+.lives{
+    margin-top: 0;
+    display: inline-block;
+    position: relative;
+}
+
 
 
 #footer {
