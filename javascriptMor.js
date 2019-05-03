@@ -15,7 +15,36 @@ var fivePointColor;
 var fifteenPointColor;
 var twentyfivePointColor;
 
+//
+var context = canvas.getContext("2d");
+var shape = new Object();
+var board;
+var score;
+var pac_color;
+var start_time;
+var time_elapsed;
+var interval;
+var fivePointsFood;
+var fifteenPointsFood;
+var twentyfivePointsFood;
+var countFive = 0;
+var countFifteen = 0;
+var countTwentyfive = 0;
 
+var map = [
+    [0,0,0,0,0,1,1,0,0,0,0,0],
+    [0,1,1,0,0,1,1,0,0,1,1,0],
+    [0,1,0,0,0,1,1,0,0,0,1,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0],
+    [1,1,0,0,1,1,1,1,0,0,1,1],
+    [1,1,0,0,1,1,1,1,0,0,1,1],
+    [1,1,0,0,1,1,1,1,0,0,1,1],
+    [0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,1,1,0,0,0,0,0,0,1,1,0],
+    [0,1,0,0,1,1,1,1,0,0,1,0],
+    [0,0,0,0,1,1,1,1,0,0,0,0],
+];
 
 function start(){
     var user = new User("a","a","a","a","a@a","4");
@@ -42,6 +71,9 @@ function showDiv(id){
         $("#5Points").val("#FAEBD7");
         $("#15Points").val("#7FFFD4");
         $("#25Points").val("#BA55D3");
+        countFive  = 0;
+        countFifteen = 0;
+        countTwentyfive = 0;
     }
 }
 
@@ -53,6 +85,9 @@ $("#submit").click(function () {
     var firstName = $("#firstName").val();
     var lastName = $("#lastName").val();
     var email = $("#email").val();
+    var day = $("#day").val();
+    var month = $("#month").val();
+    var year = $("#year").val();
 
     if (userName.length === 0) {
         $("#userNameRequired").css("display", "inline-block");
@@ -79,6 +114,7 @@ $("#submit").click(function () {
         $("#email").css("border","2px solid red");
         isValid = false;
     }
+
 
     if (isValid){
 
@@ -117,7 +153,7 @@ $("#submit").click(function () {
                 }
             }
             if (!isExist){
-                var user = new User(userName,password,firstName,lastName,email,"birthday");
+                var user = new User(userName,password,firstName,lastName,email,day + "/" + month + "/" + year);
                 users.push(user);
                 alert("The registration was successful");
                 showDiv('Welcome');
@@ -186,6 +222,7 @@ $("#up").keydown(function (event) {
         return;
     }
     $("#up").val(upButton + " was chosen");
+    //upButton = event.code;
 });
 
 //get left button
@@ -209,6 +246,7 @@ $("#left").keydown(function (event) {
         return;
     }
     $("#left").val(leftButton + " was chosen");
+    //leftButton = event.code;
 });
 
 // get right button
@@ -232,6 +270,8 @@ $("#right").keydown(function (event) {
         return;
     }
     $("#right").val(rightButton + " was chosen");
+    //rightButton = event.code;
+    //alert(rightButton);
 });
 
 // get down button
@@ -255,6 +295,7 @@ $("#down").keydown(function (event) {
         return;
     }
     $("#down").val(downButton + " was chosen");
+    //downButton = event.code;
 });
 
 
@@ -265,13 +306,12 @@ $("#start").click(function () {
     $("#right").css("border","");
     $("#down").css("border","");
     var isValid = true;
-    // checkArrowsPressed();
     ballsAmount = $("#ballsAmount").val();
     monsterAmount = $("#monsterAmount").val();
     time = $("#gameTime").val();
-    fivePointColor = $("#5Points");
-    fifteenPointColor = $("#15Points");
-    twentyfivePointColor = $("#25Points");
+    fivePointColor = $("#5Points").val();
+    fifteenPointColor = $("#15Points").val();
+    twentyfivePointColor = $("#25Points").val();
     if (leftButton === undefined){
         $("#left").css("border","2px solid red");
         isValid = false;
@@ -298,8 +338,16 @@ $("#start").click(function () {
         isValid = false;
     }
 
+
     if (isValid) {
-        showDiv('startGame')
+        fivePointsFood = Math.ceil(ballsAmount * 60 / 100);
+        fifteenPointsFood = Math.floor(ballsAmount * 30 / 100);
+        twentyfivePointsFood = Math.floor(ballsAmount * 10 / 100);
+        setGameParameters();
+        Start();
+        showDiv('startGame');
+
+
     }
 });
 
@@ -311,10 +359,10 @@ $("#random").click(function () {
     $("#up").val("Arrow UP was chosen");
     $("#down").val("Arrow DOWN was chosen");
     $("#right").val("Arrow RIGHT was chosen");
-    leftButton = "%";
-    upButton = "&";
-    rightButton = "'";
-    downButton = "(";
+    leftButton = 'ArrowLeft';
+    upButton = 'ArrowUp';
+    rightButton = 'ArrowRight';
+    downButton = 'ArrowDown';
     while (true) {
         var color5Point = getRandomColor();
         var color15Point = getRandomColor();
@@ -338,33 +386,47 @@ function getRandomColor() {
     return color;
 }
 
+function setGameParameters() {
+
+    var c = document.getElementById("first");
+    var ctx = c.getContext("2d");
+    ctx.beginPath();
+    ctx.arc(25, 15, 5, 0, 2 * Math.PI);
+    ctx.fillStyle = fivePointColor;
+    ctx.fill();
+    ctx.stroke();
+    c = document.getElementById("second");
+    ctx = c.getContext("2d");
+    ctx.beginPath();
+    ctx.arc(18, 15, 5, 0, 2 * Math.PI);
+    ctx.fillStyle = fifteenPointColor;
+    ctx.fill();
+    ctx.stroke();
+    c = document.getElementById("third");
+    ctx = c.getContext("2d");
+    ctx.beginPath();
+    ctx.arc(18, 15, 5, 0, 2 * Math.PI);
+    ctx.fillStyle = twentyfivePointColor;
+    ctx.fill();
+    ctx.stroke();
+}
 
 
-/*
-var context = canvas.getContext("2d");
-var shape = new Object();
-var board;
-var score;
-var pac_color;
-var start_time;
-var time_elapsed;
-var interval;
 
-Start();
 
 function Start() {
     board = new Array();
     score = 0;
     pac_color = "yellow";
-    var cnt = 100;
-    var food_remain = 50;
+    var cnt = 144;
+    var food_remain = ballsAmount;
     var pacman_remain = 1;
     start_time = new Date();
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 12; i++) {
         board[i] = new Array();
         //put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
-        for (var j = 0; j < 10; j++) {
-            if ((i === 3 && j === 3) || (i === 3 && j === 4) || (i === 3 && j === 5) || (i === 6 && j === 1) || (i === 6 && j === 2)) {
+        for (var j = 0; j < 12; j++) {
+            if (map[i][j] === 1) {
                 board[i][j] = 4;
             } else {
                 var randomNum = Math.random();
@@ -383,35 +445,39 @@ function Start() {
             }
         }
     }
+
     while (food_remain > 0) {
         var emptyCell = findRandomEmptyCell(board);
         board[emptyCell[0]][emptyCell[1]] = 1;
         food_remain--;
     }
+
     keysDown = {};
+    setColors();
     addEventListener("keydown", function (e) {
         keysDown[e.code] = true;
     }, false);
     addEventListener("keyup", function (e) {
         keysDown[e.code] = false;
     }, false);
+
     interval = setInterval(UpdatePosition, 250);
 }
 
 
 function findRandomEmptyCell(board) {
-    var i = Math.floor((Math.random() * 9) + 1);
-    var j = Math.floor((Math.random() * 9) + 1);
+    var i = Math.floor((Math.random() * 11) + 1);
+    var j = Math.floor((Math.random() * 11) + 1);
     while (board[i][j] !== 0) {
-        i = Math.floor((Math.random() * 9) + 1);
-        j = Math.floor((Math.random() * 9) + 1);
+        i = Math.floor((Math.random() * 11) + 1);
+        j = Math.floor((Math.random() * 11) + 1);
     }
     return [i, j];
 }
 
-/!**
+/**
  * @return {number}
- *!/
+ */
 function GetKeyPressed() {
     if (keysDown['ArrowUp']) {
         return 1;
@@ -429,31 +495,41 @@ function GetKeyPressed() {
 
 function Draw() {
     context.clearRect(0, 0, canvas.width, canvas.height); //clean board
-    lblScore.value = score;
-    lblTime.value = time_elapsed;
-    for (var i = 0; i < 10; i++) {
-        for (var j = 0; j < 10; j++) {
+    $("#score").text(score);
+    $("#remainingTime").text(time_elapsed);
+    for (var i = 0; i < 12; i++) {
+        for (var j = 0; j < 12; j++) {
             var center = new Object();
-            center.x = i * 60 + 30;
-            center.y = j * 60 + 30;
+            center.x = i * 27 + 10;
+            center.y = j * 27 + 10;
             if (board[i][j] === 2) {
                 context.beginPath();
-                context.arc(center.x, center.y, 30, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
+                context.arc(center.x, center.y, 10, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
                 context.lineTo(center.x, center.y);
                 context.fillStyle = pac_color; //color
                 context.fill();
                 context.beginPath();
-                context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle
+                context.arc(center.x, center.y - 2, 2, 0, 2 * Math.PI); // circle
                 context.fillStyle = "black"; //color
                 context.fill();
-            } else if (board[i][j] === 1) {
+            } else if (board[i][j] === 3 || board[i][j] === 5 || board[i][j] === 6) {
+                var color;
+                if (board[i][j] === 3){
+                    color = fivePointColor;
+                }
+                if (board[i][j] === 5){
+                    color = fifteenPointColor;
+                }
+                if (board[i][j] === 6){
+                    color = twentyfivePointColor;
+                }
                 context.beginPath();
-                context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
-                context.fillStyle = "black"; //color
+                context.arc(center.x, center.y, 7, 0, 2 * Math.PI); // circle
+                context.fillStyle = color; //color
                 context.fill();
             } else if (board[i][j] === 4) {
                 context.beginPath();
-                context.rect(center.x - 30, center.y - 30, 60, 60);
+                context.rect(center.x - 10, center.y - 10 , 20, 20);
                 context.fillStyle = "grey"; //color
                 context.fill();
             }
@@ -472,7 +548,7 @@ function UpdatePosition() {
         }
     }
     if (x === 2) {
-        if (shape.j < 9 && board[shape.i][shape.j + 1] !== 4) {
+        if (shape.j < 11 && board[shape.i][shape.j + 1] !== 4) {
             shape.j++;
         }
     }
@@ -482,23 +558,65 @@ function UpdatePosition() {
         }
     }
     if (x === 4) {
-        if (shape.i < 9 && board[shape.i + 1][shape.j] !== 4) {
+        if (shape.i < 11 && board[shape.i + 1][shape.j] !== 4) {
             shape.i++;
         }
     }
-    if (board[shape.i][shape.j] === 1) {
-        score++;
+    if (board[shape.i][shape.j] === 3) {
+        score+=5;
+    }
+    if (board[shape.i][shape.j] === 5) {
+        score+=15;
+    }
+    if (board[shape.i][shape.j] === 6) {
+        score+=25;
     }
     board[shape.i][shape.j] = 2;
     var currentTime = new Date();
-    time_elapsed = (currentTime - start_time) / 1000;
+    time_elapsed = Math.floor((currentTime - start_time) / 1000);
     if (score >= 20 && time_elapsed <= 10) {
         pac_color = "green";
     }
-    if (score === 50) {
+    if (score === ballsAmount) {
         window.clearInterval(interval);
         window.alert("Game completed");
-    } else {
+    }
+    if (time_elapsed === time){
+        window.clearInterval(interval);
+        window("Game Over...");
+    }
+    else {
         Draw();
     }
-}*/
+}
+
+function setColors(){
+    for (let i = 0; i < 12; i++) {
+        for (let j = 0; j < 12; j++) {
+            if (board[i][j] === 1) {
+                while(true) {
+                    if (countFive > fivePointsFood && countFifteen > fifteenPointsFood && countTwentyfive > twentyfivePointsFood) {
+                        break;
+                    }
+                    var ran = Math.floor((Math.random() * 3) + 1);
+                    if (ran === 1 && countFive <= fivePointsFood) {
+                        board[i][j] = 3; // for five point food
+                        countFive++;
+                        break;
+                    }
+                    if (ran === 2 && countFifteen <= fifteenPointsFood) {
+                        board[i][j] = 5; // for fifteen point food
+                        countFifteen++;
+                        break;
+                    }
+                    if (ran === 3 && countTwentyfive <= twentyfivePointsFood) {
+                        board[i][j] = 6; // for twenty five point food
+                        countTwentyfive++;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+}
