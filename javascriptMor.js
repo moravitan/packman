@@ -31,6 +31,7 @@ var countFive = 0;
 var countFifteen = 0;
 var countTwentyfive = 0;
 
+
 var map = [
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     [0,10,10,10,0,0,0,1,1,1,1,1,1,0],
