@@ -9,7 +9,7 @@ var downButton;
 
 // game's configuration
 var ballsAmount;
-var monsterAmount;
+var ghostAmount;
 var time;
 var fivePointColor;
 var fifteenPointColor;
@@ -31,8 +31,22 @@ var countFive = 0;
 var countFifteen = 0;
 var countTwentyfive = 0;
 
+var direction = "RIGHT";
+
+var music = new Audio('PacManOriginalTheme.mp3');
+// Yuval add
+var ghost1 = new Image();
+ghost1.src = "ghost1.png";
+var positionGhost1 = new Object();
+var ghost2 = new Image();
+ghost2.src = "ghost2.png";
+var positionGhost2 = new Object();
+var ghost3 = new Image();
+ghost3.src = "ghost3.png";
+var positionGhost3 = new Object();
+
 var map = [
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [7,0,0,0,0,0,0,0,0,0,0,0,0,7.2],
     [0,10,10,10,0,0,0,1,1,1,1,1,1,0],
     [0,10,0,0,0,0,0,1,0,0,0,0,1,0],
     [0,10,10,0,0,0,0,0,0,0,1,1,1,0],
@@ -45,7 +59,7 @@ var map = [
     [0,1,1,1,1,1,0,0,0,10,10,10,0,0],
     [0,1,0,0,0,1,0,0,0,0,0,10,10,10],
     [0,1,1,0,1,1,0,0,0,10,10,10,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [7.1,0,0,0,0,0,0,0,0,0,0,0,0,0],
 ];
 
 function start(){
@@ -57,10 +71,10 @@ function start(){
 
 function showDiv(id){
     // clearInterval(interval);
-    /*    if (id !== 'startGame') {
-            // music.pause();
-            clearInterval(interval);
-        }*/
+    if (id !== 'startGame') {
+        music.pause();
+        clearInterval(interval);
+    }
     document.getElementById('Welcome').style.display = 'none';
     document.getElementById('Register').style.display = 'none';
     document.getElementById('Login').style.display = 'none';
@@ -81,6 +95,7 @@ function showDiv(id){
         countFifteen = 0;
         countTwentyfive = 0;
     }
+
 }
 
 $("#submit").click(function () {
@@ -313,7 +328,7 @@ $("#start").click(function () {
     $("#down").css("border","");
     var isValid = true;
     ballsAmount = $("#ballsAmount").val();
-    monsterAmount = $("#ghostAmount").val();
+    ghostAmount = $("#ghostAmount").val();
     time = $("#gameTime").val();
     fivePointColor = $("#5Points").val();
     fifteenPointColor = $("#15Points").val();
@@ -337,7 +352,7 @@ $("#start").click(function () {
     if (ballsAmount !== '' && (ballsAmount < 50 || ballsAmount > 90)){
         isValid = false;
     }
-    if (monsterAmount !== '' && (monsterAmount < 1 || monsterAmount > 3)){
+    if (ghostAmount !== '' && (ghostAmount < 1 || ghostAmount > 3)){
         isValid = false;
     }
     if (time !== '' && time < 60){
@@ -350,9 +365,9 @@ $("#start").click(function () {
         fifteenPointsFood = Math.floor(ballsAmount * 30 / 100);
         twentyfivePointsFood = Math.floor(ballsAmount * 10 / 100);
         setGameParameters();
-        Start();
-
+        StartGame();
         showDiv('startGame');
+        music.play();
     }
 });
 
@@ -419,11 +434,11 @@ function setGameParameters() {
 
 
 
-function Start() {
+function StartGame() {
     board = new Array();
     score = 0;
     pac_color = "yellow";
-    var cnt = 144;
+    var cnt = 196;
     var food_remain = ballsAmount;
     var pacman_remain = 1;
     start_time = new Date();
@@ -431,6 +446,22 @@ function Start() {
         board[i] = new Array();
         //put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
         for (var j = 0; j < 14; j++) {
+
+            if(map[i][j] === 7){
+                board[i][j] = 7;
+                break;
+            }
+
+            if(ghostAmount === "2" && map[i][j] === 7.1){
+                board[i][j] = 7.1;
+                break;
+            }
+
+            if((map[i][j] === 7.2  || map[i][j] === 7.1) && ghostAmount === "3"){
+                board[0][13] = 7.2;
+                board[13][0] = 7.1;
+                break;
+            }
             if (map[i][j] === 1 || map[i][j] === 10) {
                 board[i][j] = 4;
             } else {
@@ -497,7 +528,64 @@ function GetKeyPressed() {
     }
 }
 
-function Draw() {
+function drawPacmanPosition(x,y,radius,startAngle,endAngle,eyeX,eyeY){
+    context.beginPath();
+    context.arc(x, y, radius, startAngle, endAngle); // half circle
+    context.lineTo(x, y);
+    context.fillStyle = pac_color;
+    context.fill();
+    context.arc(x, y, radius, startAngle, endAngle); // half circle
+    context.fillStyle = "black";
+    context.lineWidth = 1;
+    context.stroke();
+    context.beginPath();
+    context.arc(eyeX, eyeY, 1, 0, 2 * Math.PI); // circle
+    context.fillStyle = "black"; //color
+    context.fill();
+}
+
+function drawGhost(x, y, radius, color) {
+    context.beginPath();
+
+    context.arc(x, y, 8, Math.PI, 0, false);
+    context.moveTo(x - 8, y);
+    context.lineTo(x-radius, y+radius-radius/4);
+    context.lineTo(x-radius+radius/3, y+radius);
+    context.lineTo(x-radius+radius/3*2, y+radius-radius/4);
+    context.lineTo(x, y+radius);
+    context.lineTo(x+radius/3, y+radius-radius/4);
+    context.lineTo(x+radius/3*2, y+radius);
+    context.lineTo(x+radius, y+radius-radius/4);
+    context.lineTo(x+radius, y);
+    context.lineTo(x+8, y+8);
+    context.lineTo(x+8, y);
+    context.fillStyle = color;
+    context.fill();
+
+    context.fillStyle = "white"; //left eye
+    context.beginPath();
+    context.arc(x-8/2.5, y-8/5, 8/4, 0, Math.PI*2, true); // white
+    context.fill();
+
+    context.fillStyle = "white"; //right eye
+    context.beginPath();
+    context.arc(x+8/2.5, y-8/5, 8/4, 0, Math.PI*2, true); // white
+    context.fill();
+
+    context.fillStyle="black"; //left eyeball
+    context.beginPath();
+    context.arc(x-8/3+8/15, y-8/5, 8/6, 0, Math.PI*2, true); //black
+    context.fill();
+
+    context.fillStyle="black"; //right eyeball
+    context.beginPath();
+    context.arc(x+8/3+8/5, y-8/5, 8/6, 0, Math.PI*2, true); //black
+    context.fill();
+
+}
+
+function Draw(key) {
+
     context.clearRect(0, 0, canvas.width, canvas.height); //clean board
     $("#score").text(score);
     $("#remainingTime").text(time_elapsed);
@@ -507,15 +595,20 @@ function Draw() {
             center.x = i * 27 + 10;
             center.y = j * 27 + 10;
             if (board[i][j] === 2) {
-                context.beginPath();
-                context.arc(center.x, center.y, 7, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
-                context.lineTo(center.x, center.y);
-                context.fillStyle = pac_color; //color
-                context.fill();
-                context.beginPath();
-                context.arc(center.x - 1, center.y - 2, 1, 0, 2 * Math.PI); // circle
-                context.fillStyle = "black"; //color
-                context.fill();
+
+                if (key === "RIGHT") { // right
+                    drawPacmanPosition(center.x,center.y,8,0.15 * Math.PI, 1.85 * Math.PI,center.x - 3, center.y - 2);
+                }
+                else if (key === "DOWN"){ //down
+                    drawPacmanPosition(center.x,center.y,8,0.65 * Math.PI,2.35 * Math.PI, center.x - 3 , center.y - 2);
+                }
+                else if (key === "LEFT"){ //left
+                    drawPacmanPosition(center.x,center.y,8,-0.85 * Math.PI, 0.85 * Math.PI, center.x + 2, center.y - 3);
+                }
+                else if (key === "UP"){ //up
+                    drawPacmanPosition(center.x,center.y,8,-0.35 * Math.PI, 1.35 * Math.PI,center.x + 3,center.y + 2);
+                }
+
             } else if (board[i][j] === 5 || board[i][j] === 15 || board[i][j] === 25) {
                 var color;
                 if (board[i][j] === 5){
@@ -541,11 +634,28 @@ function Draw() {
                 context.beginPath();
                 context.rect(center.x - 10, center.y  - 10, 20, 20);
                 context.fillStyle = "rgb(179,179,179)"; //color
-
                 context.fill();
                 //context.stroke();
             }
-            // drawWalls();
+            // draw monster
+            else if (board[i][j] === 7 || board[i][j] === 7.1 || board[i][j] === 7.2) {//draw ghost 1 - yuval
+                //context.drawImage(ghost1, center.x - 8, center.y - 8, 18, 23);
+                var color;
+                if (board[i][j] === 7){
+                    color = "red";
+                }
+                if(board[i][j] === 7.1){
+                    color = "blue";
+                }
+                if(board[i][j] === 7.2){
+                    color = "green";
+                }
+                var radius = 8;
+                drawGhost(center.x,center.y,8,color);
+            }
+
+
+
 
         }
     }
@@ -560,21 +670,25 @@ function UpdatePosition() {
         if (shape.j > 0 && board[shape.i][shape.j - 1] !== 4) {
             shape.j--;
         }
+        direction = "UP";
     }
     if (x === 2) {
         if (shape.j < 13 && board[shape.i][shape.j + 1] !== 4) {
             shape.j++;
         }
+        direction = "DOWN";
     }
     if (x === 3) {
         if (shape.i > 0 && board[shape.i - 1][shape.j] !== 4) {
             shape.i--;
         }
+        direction = "LEFT";
     }
     if (x === 4) {
         if (shape.i < 13 && board[shape.i + 1][shape.j] !== 4) {
             shape.i++;
         }
+        direction = "RIGHT";
     }
     if (board[shape.i][shape.j] === 5) {
         score+=5;
@@ -594,13 +708,16 @@ function UpdatePosition() {
     if (score === (5 * countFive + 15 * countFifteen + 25 * countTwentyfive)) {
         window.clearInterval(interval);
         window.alert("Game completed");
+        music.pause();
+        showDiv('Settings');
     }
     if (time_elapsed === time){
         window.clearInterval(interval);
         window("Game Over...");
+        music.pause();
     }
     else {
-        Draw();
+        Draw(direction);
     }
 }
 
