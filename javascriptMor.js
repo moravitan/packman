@@ -34,9 +34,19 @@ var countTwentyfive = 0;
 var direction = "RIGHT";
 
 var music = new Audio('PacManOriginalTheme.mp3');
+// Yuval add
+var ghost1 = new Image();
+ghost1.src = "ghost1.png";
+var positionGhost1 = new Object();
+var ghost2 = new Image();
+ghost2.src = "ghost2.png";
+var positionGhost2 = new Object();
+var ghost3 = new Image();
+ghost3.src = "ghost3.png";
+var positionGhost3 = new Object();
 
 var map = [
-    [7,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [7,0,0,0,0,0,0,0,0,0,0,0,0,7.2],
     [0,10,10,10,0,0,0,1,1,1,1,1,1,0],
     [0,10,0,0,0,0,0,1,0,0,0,0,1,0],
     [0,10,10,0,0,0,0,0,0,0,1,1,1,0],
@@ -49,7 +59,7 @@ var map = [
     [0,1,1,1,1,1,0,0,0,10,10,10,0,0],
     [0,1,0,0,0,1,0,0,0,0,0,10,10,10],
     [0,1,1,0,1,1,0,0,0,10,10,10,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [7.1,0,0,0,0,0,0,0,0,0,0,0,0,0],
 ];
 
 function start(){
@@ -436,6 +446,22 @@ function StartGame() {
         board[i] = new Array();
         //put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
         for (var j = 0; j < 14; j++) {
+
+            if(map[i][j] === 7){
+                board[i][j] = 7;
+                break;
+            }
+
+            if(ghostAmount === "2" && map[i][j] === 7.1){
+                board[i][j] = 7.1;
+                break;
+            }
+
+            if((map[i][j] === 7.2  || map[i][j] === 7.1) && ghostAmount === "3"){
+                board[0][13] = 7.2;
+                board[13][0] = 7.1;
+                break;
+            }
             if (map[i][j] === 1 || map[i][j] === 10) {
                 board[i][j] = 4;
             } else {
@@ -518,6 +544,46 @@ function drawPacmanPosition(x,y,radius,startAngle,endAngle,eyeX,eyeY){
     context.fill();
 }
 
+function drawGhost(x, y, radius, color) {
+    context.beginPath();
+
+    context.arc(x, y, 8, Math.PI, 0, false);
+    context.moveTo(x - 8, y);
+    context.lineTo(x-radius, y+radius-radius/4);
+    context.lineTo(x-radius+radius/3, y+radius);
+    context.lineTo(x-radius+radius/3*2, y+radius-radius/4);
+    context.lineTo(x, y+radius);
+    context.lineTo(x+radius/3, y+radius-radius/4);
+    context.lineTo(x+radius/3*2, y+radius);
+    context.lineTo(x+radius, y+radius-radius/4);
+    context.lineTo(x+radius, y);
+    context.lineTo(x+8, y+8);
+    context.lineTo(x+8, y);
+    context.fillStyle = color;
+    context.fill();
+
+    context.fillStyle = "white"; //left eye
+    context.beginPath();
+    context.arc(x-8/2.5, y-8/5, 8/4, 0, Math.PI*2, true); // white
+    context.fill();
+
+    context.fillStyle = "white"; //right eye
+    context.beginPath();
+    context.arc(x+8/2.5, y-8/5, 8/4, 0, Math.PI*2, true); // white
+    context.fill();
+
+    context.fillStyle="black"; //left eyeball
+    context.beginPath();
+    context.arc(x-8/3+8/15, y-8/5, 8/6, 0, Math.PI*2, true); //black
+    context.fill();
+
+    context.fillStyle="black"; //right eyeball
+    context.beginPath();
+    context.arc(x+8/3+8/5, y-8/5, 8/6, 0, Math.PI*2, true); //black
+    context.fill();
+
+}
+
 function Draw(key) {
 
     context.clearRect(0, 0, canvas.width, canvas.height); //clean board
@@ -571,46 +637,25 @@ function Draw(key) {
                 context.fill();
                 //context.stroke();
             }
-            else if (map[i][j] === 7){
-                context.beginPath();
+            // draw monster
+            else if (board[i][j] === 7 || board[i][j] === 7.1 || board[i][j] === 7.2) {//draw ghost 1 - yuval
+                //context.drawImage(ghost1, center.x - 8, center.y - 8, 18, 23);
+                var color;
+                if (board[i][j] === 7){
+                    color = "red";
+                }
+                if(board[i][j] === 7.1){
+                    color = "blue";
+                }
+                if(board[i][j] === 7.2){
+                    color = "green";
+                }
                 var radius = 8;
-                context.arc(center.x, center.y, 8, Math.PI, 0, false);
-                context.moveTo(center.x - 8, center.y);
-                context.lineTo(center.x-radius, center.y+radius-radius/4);
-                context.lineTo(center.x-radius+radius/3, center.y+radius);
-                context.lineTo(center.x-radius+radius/3*2, center.y+radius-radius/4);
-                context.lineTo(center.x, center.y+radius);
-                context.lineTo(center.x+radius/3, center.y+radius-radius/4);
-                context.lineTo(center.x+radius/3*2, center.y+radius);
-                context.lineTo(center.x+radius, center.y+radius-radius/4);
-                context.lineTo(center.x+radius, center.y);
-
-                context.lineTo(center.x+8, center.y+8);
-                context.lineTo(center.x+8, center.y);
-                context.fillStyle = "blue";
-                context.fill();
-
-                context.fillStyle = "white"; //left eye
-                context.beginPath();
-                context.arc(center.x-8/2.5, center.y-8/5, 8/4, 0, Math.PI*2, true); // white
-                context.fill();
-
-                context.fillStyle = "white"; //right eye
-                context.beginPath();
-                context.arc(center.x+8/2.5, center.y-8/5, 8/4, 0, Math.PI*2, true); // white
-                context.fill();
-
-                context.fillStyle="black"; //left eyeball
-                context.beginPath();
-                context.arc(center.x-8/3+8/15, center.y-8/5, 8/6, 0, Math.PI*2, true); //black
-                context.fill();
-
-                context.fillStyle="black"; //right eyeball
-                context.beginPath();
-                context.arc(center.x+8/3+8/5, center.y-8/5, 8/6, 0, Math.PI*2, true); //black
-                context.fill();
+                drawGhost(center.x,center.y,8,color);
             }
-            // drawWalls();
+
+
+
 
         }
     }
