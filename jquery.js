@@ -180,7 +180,7 @@ jQuery.fn = jQuery.prototype = {
 		return jQuery.makeArray( selector, this );
 	},
 
-	// Start with an empty selector
+	// startGame with an empty selector
 	selector: "",
 
 	// The current version of jQuery being used
@@ -5749,7 +5749,7 @@ jQuery.fx.prototype = {
 		return r && r > -10000 ? r : parseFloat(jQuery.curCSS(this.elem, this.prop)) || 0;
 	},
 
-	// Start an animation from one number to another
+	// startGame an animation from one number to another
 	custom: function( from, to, unit ) {
 		this.startTime = now();
 		this.start = from;
@@ -5781,7 +5781,7 @@ jQuery.fx.prototype = {
 		// flash of content
 		this.custom(this.prop === "width" || this.prop === "height" ? 1 : 0, this.cur());
 
-		// Start by showing the element
+		// startGame by showing the element
 		jQuery( this.elem ).show();
 	},
 

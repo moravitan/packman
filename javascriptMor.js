@@ -72,7 +72,7 @@ function showDiv(id){
     }
     else{
         $("#ballsAmount").val('50');
-        $("#monsterAmount").val('1');
+        $("#ghostAmount").val('1');
         $("#gameTime").val('60');
         $("#5Points").val("#FAEBD7");
         $("#15Points").val("#7FFFD4");
@@ -313,7 +313,7 @@ $("#start").click(function () {
     $("#down").css("border","");
     var isValid = true;
     ballsAmount = $("#ballsAmount").val();
-    monsterAmount = $("#monsterAmount").val();
+    monsterAmount = $("#ghostAmount").val();
     time = $("#gameTime").val();
     fivePointColor = $("#5Points").val();
     fifteenPointColor = $("#15Points").val();
@@ -357,7 +357,7 @@ $("#start").click(function () {
 });
 
 $("#random").click(function () {
-    $("#monsterAmount").val(Math.floor( Math.random() * (4-1) + 1));
+    $("#ghostAmount").val(Math.floor( Math.random() * (4-1) + 1));
     $("#ballsAmount").val(Math.floor(Math.random() * (91 - 50) + 50));
     $("#gameTime").val(Math.floor(Math.random() * (600 - 60) + 60));
     $("#left").val("Arrow LEFT was chosen");
