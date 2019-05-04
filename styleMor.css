@@ -115,11 +115,12 @@ button.text, input.text{
 
 
 
-#registration button{
+/*#registration button{
     margin-left: 17%;
     width: 13%;
     height: 1%;
-}
+}*/
+
 #Login{
     text-align: center;
 }
@@ -149,6 +150,7 @@ button.text, input.text{
     /*padding: 1em;*/
     /*background: white;*/
 }
+
 #buttonClose{
     background-color: rgb(153,153,255);
     width: 40%;
