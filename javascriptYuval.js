@@ -9,7 +9,7 @@ var downButton;
 
 // game's configuration
 var ballsAmount;
-var monsterAmount;
+var ghostAmount;
 var time;
 var fivePointColor;
 var fifteenPointColor;
@@ -31,19 +31,33 @@ var countFive = 0;
 var countFifteen = 0;
 var countTwentyfive = 0;
 
+
+// Yuval add
+var ghost1 = new Image();
+ghost1.src = "ghost1.png";
+var positionGhost1 = new Object();
+var ghost2 = new Image();
+ghost2.src = "ghost2.png";
+var positionGhost2 = new Object();
+var ghost3 = new Image();
+ghost3.src = "ghost3.png";
+var positionGhost3 = new Object();
+
 var map = [
-    [0,0,0,0,0,1,1,0,0,0,0,0],
-    [0,1,1,0,0,1,1,0,0,1,1,0],
-    [0,1,0,0,0,1,1,0,0,0,1,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0],
-    [1,1,0,0,1,1,1,1,0,0,1,1],
-    [1,1,0,0,1,1,1,1,0,0,1,1],
-    [1,1,0,0,1,1,1,1,0,0,1,1],
-    [0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,1,1,0,0,0,0,0,0,1,1,0],
-    [0,1,0,0,1,1,1,1,0,0,1,0],
-    [0,0,0,0,1,1,1,1,0,0,0,0],
+    [7,0,0,0,0,0,0,0,0,0,0,0,0,7.2],
+    [0,10,10,10,0,0,0,1,1,1,1,1,1,0],
+    [0,10,0,0,0,0,0,1,0,0,0,0,1,0],
+    [0,10,10,0,0,0,0,0,0,0,1,1,1,0],
+    [0,10,0,0,0,10,10,10,0,0,0,0,0,0],
+    [0,10,10,10,0,10,10,10,10,0,0,1,1,0],
+    [0,0,0,0,0,0,10,10,10,10,0,0,1,0],
+    [0,0,0,0,0,10,10,10,10,0,0,0,1,0],
+    [0,1,1,0,0,10,10,10,0,0,1,1,1,0],
+    [0,1,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,1,1,1,1,1,0,0,0,10,10,10,0,0],
+    [0,1,0,0,0,1,0,0,0,0,0,10,10,10],
+    [0,1,1,0,1,1,0,0,0,10,10,10,0,0],
+    [7.1,0,0,0,0,0,0,0,0,0,0,0,0,0],
 ];
 
 function start(){
@@ -54,7 +68,11 @@ function start(){
 
 
 function showDiv(id){
-
+    // clearInterval(interval);
+        if (id !== 'startGame') {
+            // music.pause();
+            clearInterval(interval);
+        }
     document.getElementById('Welcome').style.display = 'none';
     document.getElementById('Register').style.display = 'none';
     document.getElementById('Login').style.display = 'none';
@@ -307,7 +325,7 @@ $("#start").click(function () {
     $("#down").css("border","");
     var isValid = true;
     ballsAmount = $("#ballsAmount").val();
-    monsterAmount = $("#ghostAmount").val();
+    ghostAmount = $("#ghostAmount").val();
     time = $("#gameTime").val();
     fivePointColor = $("#5Points").val();
     fifteenPointColor = $("#15Points").val();
@@ -331,7 +349,7 @@ $("#start").click(function () {
     if (ballsAmount !== '' && (ballsAmount < 50 || ballsAmount > 90)){
         isValid = false;
     }
-    if (monsterAmount !== '' && (monsterAmount < 1 || monsterAmount > 3)){
+    if (ghostAmount !== '' && (ghostAmount < 1 || ghostAmount > 3)){
         isValid = false;
     }
     if (time !== '' && time < 60){
@@ -344,7 +362,7 @@ $("#start").click(function () {
         fifteenPointsFood = Math.floor(ballsAmount * 30 / 100);
         twentyfivePointsFood = Math.floor(ballsAmount * 10 / 100);
         setGameParameters();
-        Start();
+        startGame();
 
         showDiv('startGame');
     }
@@ -413,25 +431,43 @@ function setGameParameters() {
 
 
 
-function Start() {
+function startGame() {
     board = new Array();
     score = 0;
     pac_color = "yellow";
-    var cnt = 144;
+    var cnt = 196;
     var food_remain = ballsAmount;
     var pacman_remain = 1;
     start_time = new Date();
-    for (var i = 0; i < 12; i++) {
+
+    for (var i = 0; i < 14; i++) {
         board[i] = new Array();
+
         //put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
-        for (var j = 0; j < 12; j++) {
-            if (map[i][j] === 1) {
-                board[i][j] = 4;
+        for (var j = 0; j < 14; j++) {
+            if(map[i][j] === 7){
+                board[i][j] = 7;
+                break;
+            }
+
+            if(ghostAmount === "2" && map[i][j] === 7.1){
+                board[i][j] = 7.1;
+                break;
+            }
+
+            if((map[i][j] === 7.2  || map[i][j] === 7.1) && ghostAmount === "3"){
+                board[0][13] = 7.2;
+                board[13][0] = 7.1;
+                break;
+            }
+
+            if (map[i][j] === 1 || map[i][j] === 10) {
+                board[i][j] = 4; //wall
             } else {
                 var randomNum = Math.random();
                 if (randomNum <= 1.0 * food_remain / cnt) {
                     food_remain--;
-                    board[i][j] = 1;
+                    board[i][j] = 1; //food
                 } else if (randomNum < 1.0 * (pacman_remain + food_remain) / cnt) {
                     shape.i = i;
                     shape.j = j;
@@ -459,17 +495,16 @@ function Start() {
     addEventListener("keyup", function (e) {
         keysDown[e.code] = false;
     }, false);
-    drawWalls();
     interval = setInterval(UpdatePosition, 250);
 }
 
 
 function findRandomEmptyCell(board) {
-    var i = Math.floor((Math.random() * 11) + 1);
-    var j = Math.floor((Math.random() * 11) + 1);
+    var i = Math.floor((Math.random() * 13) + 1);
+    var j = Math.floor((Math.random() * 13) + 1);
     while (board[i][j] !== 0) {
-        i = Math.floor((Math.random() * 11) + 1);
-        j = Math.floor((Math.random() * 11) + 1);
+        i = Math.floor((Math.random() * 13) + 1);
+        j = Math.floor((Math.random() * 13) + 1);
     }
     return [i, j];
 }
@@ -496,12 +531,12 @@ function Draw() {
     context.clearRect(0, 0, canvas.width, canvas.height); //clean board
     $("#score").text(score);
     $("#remainingTime").text(time_elapsed);
-    for (var i = 0; i < 12; i++) {
-        for (var j = 0; j < 12; j++) {
+    for (var i = 0; i < 14; i++) {
+        for (var j = 0; j < 14; j++) {
             var center = new Object();
             center.x = i * 27 + 10;
             center.y = j * 27 + 10;
-            if (board[i][j] === 2) {
+            if (board[i][j] === 2) {   //draw pacman
                 context.beginPath();
                 context.arc(center.x, center.y, 7, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
                 context.lineTo(center.x, center.y);
@@ -511,33 +546,52 @@ function Draw() {
                 context.arc(center.x - 1, center.y - 2, 1, 0, 2 * Math.PI); // circle
                 context.fillStyle = "black"; //color
                 context.fill();
-            } else if (board[i][j] === 3 || board[i][j] === 5 || board[i][j] === 6) {
+            } else if (board[i][j] === 5 || board[i][j] === 15 || board[i][j] === 25) {
                 var color;
-                if (board[i][j] === 3){
+                if (board[i][j] === 5){
                     color = fivePointColor;
                 }
-                if (board[i][j] === 5){
+                if (board[i][j] === 15){
                     color = fifteenPointColor;
                 }
-                if (board[i][j] === 6){
+                if (board[i][j] === 25){
                     color = twentyfivePointColor;
                 }
+                //draw food
                 context.beginPath();
                 context.arc(center.x + 1, center.y + 1, 3, 0, 2 * Math.PI); // circle
                 context.fillStyle = color; //color
                 context.fill();
-            } /*else if (board[i][j] === 4) {
+                //draw wall (two different colors- m love y)
+            } else if (board[i][j] === 4 && map[i][j] === 10){
                 context.beginPath();
-                context.rect(center.x - 10, center.y  - 10, 30, 27);
-                context.fillStyle = "grey"; //color
+                context.rect(center.x - 10, center.y  - 10, 20, 20);
+                context.fillStyle = "rgb(115,115,115)"; //color
+                context.fill();
+            }
+            //draw wall (two different colors-the rest of the walls )
+            else if (board[i][j] === 4) {
+                context.beginPath();
+                context.rect(center.x - 10, center.y  - 10, 20, 20);
+                context.fillStyle = "rgb(179,179,179)"; //color
                 context.fill();
                 //context.stroke();
-            }*/
+            }
+
+            else if (board[i][j] === 7) {//draw ghost 1 - yuval
+               context.drawImage(ghost1, center.x - 8, center.y - 8, 18, 23);
+            }
+            else if (board[i][j] === 7.1) {//draw ghost 2 - yuval
+                context.drawImage(ghost2, center.x - 8, center.y - 8, 18, 23);
+            }
+            else if (board[i][j] === 7.2) {//draw ghost 3 - yuval
+                context.drawImage(ghost3, center.x - 8, center.y - 8, 18, 23);
+            }
             // drawWalls();
 
         }
     }
-    drawWalls();
+    //drawWalls();
 
 }
 
@@ -550,7 +604,7 @@ function UpdatePosition() {
         }
     }
     if (x === 2) {
-        if (shape.j < 11 && board[shape.i][shape.j + 1] !== 4) {
+        if (shape.j < 13 && board[shape.i][shape.j + 1] !== 4) {
             shape.j++;
         }
     }
@@ -560,17 +614,17 @@ function UpdatePosition() {
         }
     }
     if (x === 4) {
-        if (shape.i < 11 && board[shape.i + 1][shape.j] !== 4) {
+        if (shape.i < 13 && board[shape.i + 1][shape.j] !== 4) {
             shape.i++;
         }
     }
-    if (board[shape.i][shape.j] === 3) {
+    if (board[shape.i][shape.j] === 5) {
         score+=5;
     }
-    if (board[shape.i][shape.j] === 5) {
+    if (board[shape.i][shape.j] === 15) {
         score+=15;
     }
-    if (board[shape.i][shape.j] === 6) {
+    if (board[shape.i][shape.j] === 25) {
         score+=25;
     }
     board[shape.i][shape.j] = 2;
@@ -593,8 +647,8 @@ function UpdatePosition() {
 }
 
 function setColors(){
-    for (let i = 0; i < 12; i++) {
-        for (let j = 0; j < 12; j++) {
+    for (let i = 0; i < 14; i++) {
+        for (let j = 0; j < 14; j++) {
             if (board[i][j] === 1) {
                 while(true) {
                     if (countFive > fivePointsFood && countFifteen > fifteenPointsFood && countTwentyfive > twentyfivePointsFood) {
@@ -602,17 +656,17 @@ function setColors(){
                     }
                     var ran = Math.floor((Math.random() * 3) + 1);
                     if (ran === 1 && countFive <= fivePointsFood) {
-                        board[i][j] = 3; // for five point food
+                        board[i][j] = 5; // for five point food
                         countFive++;
                         break;
                     }
                     if (ran === 2 && countFifteen <= fifteenPointsFood) {
-                        board[i][j] = 5; // for fifteen point food
+                        board[i][j] = 15; // for fifteen point food
                         countFifteen++;
                         break;
                     }
                     if (ran === 3 && countTwentyfive <= twentyfivePointsFood) {
-                        board[i][j] = 6; // for twenty five point food
+                        board[i][j] = 25; // for twenty five point food
                         countTwentyfive++;
                         break;
                     }
@@ -620,39 +674,5 @@ function setColors(){
             }
         }
     }
-
-}
-
-function drawWalls(){
-    var i = 1;
-    var j = 1;
-    var center = new Object();
-    center.x = i * 20 + 5;
-    center.y = j * 20 + 5;
-    var image = new Image();
-    image.src = "wall1.png";
-    context.drawImage(image,center.x,center.y,45,50);
-    /*
-        context.beginPath();
-        context.moveTo(center.x, center.y);
-        context.lineTo(center.x + 50, center.y);
-        context.stroke();
-        i = 3;
-        j = 1;
-        center.x = i * 27 + 10;
-        center.y = j * 27 + 10;
-        context.beginPath();
-        context.moveTo(center.x - 5, center.y);
-        context.lineTo(center.x - 5, center.y + 23);
-        context.stroke();
-        context.beginPath();
-        context.moveTo(center.x - 5, center.y + 23);
-        context.lineTo(center.x - 30, center.y + 23);
-        context.stroke();
-        context.beginPath();
-        context.moveTo(center.x - 30, center.y + 23);
-        context.lineTo(center.x - 30, center.y + 23);
-        context.stroke();
-    */
 
 }
