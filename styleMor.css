@@ -226,10 +226,11 @@ button.text, input.text{
     position: absolute;
     top: 5%;
     height: 90%;
-    width: 60%;
+    width: 40%;
+    /*background: rgb(204, 255, 255);*/
     background: white;
-    margin-left: 20%;
-    border: 2px solid red;
+    margin-left: 30%;
+    border: 2px solid black;
 }
 
 #startGame #gameDetails{
