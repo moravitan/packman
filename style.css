@@ -54,13 +54,13 @@ button.Buttons, input.Buttons  {
     background-color: rgb(153, 153, 255);
     color: white;
     padding: 14px 20px;
-    margin: 10px 0;
+    margin: 4px 2px 40px 2px;
     border: none;
     text-align: center;
     font-size: 22px;
     display: inline-block;
     cursor: pointer;
-    width: 20%;
+    width: 12%;
     border-radius: 8px;
     font-family: "Comic Sans MS";
 }
@@ -76,31 +76,31 @@ button.text, input.text{
     width:100%;
     height:70%;
 }
-
 #content #Welcome #loginButton{
-    position: absolute;
-    top: 25%;
-    height: 20%;
-    width: 20%;
-    margin-left: 40%;
+    top: 50%;
+    height: 10%;
+    width: 10%;
+    margin-left: 45%;
 }
 
 #content #Welcome #registerButton{
-    position: absolute;
-    top: 50%;
-    height: 20%;
-    width: 20%;
-    margin-left: 40%;
+    top: 70%;
+    height: 10%;
+    width: 10%;
+    margin-left: 45%;
+    up: 90%
 }
 
 #registration{
     max-width: 70%;
-    margin: auto;
+    /*margin: auto;*/
+    margin-left: 3%;
     padding-left: 10%;
     padding-top: 1.5%;
     padding-bottom: 3%;
     font-weight: bold;
     text-align: center;
+
 }
 
 #registration input{
@@ -111,11 +111,14 @@ button.text, input.text{
     text-align: center;
 }
 
-#registration button{
+
+
+/*#registration button{
     margin-left: 17%;
     width: 13%;
     height: 1%;
-}
+}*/
+
 #Login{
     text-align: center;
 }
@@ -126,6 +129,10 @@ button.text, input.text{
     display: none;
     color: red;
     font-weight: bold;
+}
+
+.birthday{
+    margin-bottom: 1%;
 }
 
 #aboutDialog {
@@ -141,6 +148,7 @@ button.text, input.text{
     /*padding: 1em;*/
     /*background: white;*/
 }
+
 #buttonClose{
     background-color: rgb(153,153,255);
     width: 40%;
@@ -191,6 +199,18 @@ button.text, input.text{
     display: inline;
     left: 43%;
 
+
+}
+
+.smallButtons{
+    background-color: rgb(153, 153, 255);
+    color: white;
+    border: none;
+    text-align: center;
+    font-size: 15px;
+    display: inline-block;
+    cursor: pointer;
+    font-family: "Comic Sans MS";
 }
 
 /*#Settings #start{
@@ -202,6 +222,43 @@ button.text, input.text{
     margin-top: 2%;
 }*/
 
+#startGame #canvas{
+    position: absolute;
+    top: 5%;
+    height: 90%;
+    width: 40%;
+    /*background: rgb(204, 255, 255);*/
+    background: white;
+    margin-left: 30%;
+    border: 2px solid black;
+}
+
+#startGame #gameDetails{
+    top:2%;
+    position: absolute;
+    padding: 1%;
+    /*background: aliceblue;*/
+}
+
+.scores{
+    display: inline-block;
+}
+
+.lives{
+    margin-top: 0;
+    display: inline-block;
+    position: relative;
+}
+
+
+.logo{
+    top:0;
+
+}
+
+#logo{
+    margin-left: 30%;
+}
 
 #footer {
     background-color: rgb(153, 153, 255);
