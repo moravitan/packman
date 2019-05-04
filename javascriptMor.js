@@ -345,9 +345,8 @@ $("#start").click(function () {
         twentyfivePointsFood = Math.floor(ballsAmount * 10 / 100);
         setGameParameters();
         Start();
+
         showDiv('startGame');
-
-
     }
 });
 
@@ -460,7 +459,7 @@ function Start() {
     addEventListener("keyup", function (e) {
         keysDown[e.code] = false;
     }, false);
-
+    drawWalls();
     interval = setInterval(UpdatePosition, 250);
 }
 
@@ -504,12 +503,12 @@ function Draw() {
             center.y = j * 27 + 10;
             if (board[i][j] === 2) {
                 context.beginPath();
-                context.arc(center.x, center.y, 10, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
+                context.arc(center.x, center.y, 7, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
                 context.lineTo(center.x, center.y);
                 context.fillStyle = pac_color; //color
                 context.fill();
                 context.beginPath();
-                context.arc(center.x, center.y - 2, 2, 0, 2 * Math.PI); // circle
+                context.arc(center.x - 1, center.y - 2, 1, 0, 2 * Math.PI); // circle
                 context.fillStyle = "black"; //color
                 context.fill();
             } else if (board[i][j] === 3 || board[i][j] === 5 || board[i][j] === 6) {
@@ -524,18 +523,21 @@ function Draw() {
                     color = twentyfivePointColor;
                 }
                 context.beginPath();
-                context.arc(center.x, center.y, 7, 0, 2 * Math.PI); // circle
+                context.arc(center.x + 1, center.y + 1, 3, 0, 2 * Math.PI); // circle
                 context.fillStyle = color; //color
                 context.fill();
-            } else if (board[i][j] === 4) {
+            } /*else if (board[i][j] === 4) {
                 context.beginPath();
-                context.rect(center.x - 10, center.y - 10 , 20, 20);
+                context.rect(center.x - 10, center.y  - 10, 30, 27);
                 context.fillStyle = "grey"; //color
                 context.fill();
-            }
+                //context.stroke();
+            }*/
+            // drawWalls();
+
         }
     }
-
+    drawWalls();
 
 }
 
@@ -577,7 +579,7 @@ function UpdatePosition() {
     if (score >= 20 && time_elapsed <= 10) {
         pac_color = "green";
     }
-    if (score === ballsAmount) {
+    if (score === (5 * countFive + 15 * countFifteen + 25 * countTwentyfive)) {
         window.clearInterval(interval);
         window.alert("Game completed");
     }
@@ -618,5 +620,39 @@ function setColors(){
             }
         }
     }
+
+}
+
+function drawWalls(){
+    var i = 1;
+    var j = 1;
+    var center = new Object();
+    center.x = i * 20 + 5;
+    center.y = j * 20 + 5;
+    var image = new Image();
+    image.src = "wall1.png";
+    context.drawImage(image,center.x,center.y,45,50);
+/*
+    context.beginPath();
+    context.moveTo(center.x, center.y);
+    context.lineTo(center.x + 50, center.y);
+    context.stroke();
+    i = 3;
+    j = 1;
+    center.x = i * 27 + 10;
+    center.y = j * 27 + 10;
+    context.beginPath();
+    context.moveTo(center.x - 5, center.y);
+    context.lineTo(center.x - 5, center.y + 23);
+    context.stroke();
+    context.beginPath();
+    context.moveTo(center.x - 5, center.y + 23);
+    context.lineTo(center.x - 30, center.y + 23);
+    context.stroke();
+    context.beginPath();
+    context.moveTo(center.x - 30, center.y + 23);
+    context.lineTo(center.x - 30, center.y + 23);
+    context.stroke();
+*/
 
 }
