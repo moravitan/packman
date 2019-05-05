@@ -34,10 +34,13 @@ var countTwentyfive = 0;
 var direction = "RIGHT";
 
 var music = new Audio('PacManOriginalTheme.mp3');
-// Yuval add
+
+//ghosts
+var savePosition;
 var positionGhost1 = new Object();
 var positionGhost2 = new Object();
 var positionGhost3 = new Object();
+monstersArray = new Array();
 
 var numberOfLives = 3;
 
@@ -465,6 +468,12 @@ function StartGame() {
     var food_remain = ballsAmount;
     var pacman_remain = 1;
     start_time = new Date();
+
+    savePosition = new Array();
+    for (var i = 0; i < 3; i++) {
+        savePosition[i] = new Array(3).fill(0);
+    }
+
     for (var i = 0; i < 14; i++) {
         board[i] = new Array();
         //put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
@@ -472,26 +481,26 @@ function StartGame() {
 
             if(map[i][j] === 7){
                 board[i][j] = 7;
-                positionGhost1.x = i;
-                positionGhost1.y = j;
+                positionGhost1.i = i;
+                positionGhost1.j = j;
                 break;
             }
+
             if(ghostAmount === "2" && map[i][j] === 7.1){
                 board[i][j] = 7.1;
-                positionGhost2.x = i;
-                positionGhost2.y = j;
+                positionGhost2.i = i;
+                positionGhost2.j = j;
                 break;
             }
 
             if((map[i][j] === 7.2  || map[i][j] === 7.1) && ghostAmount === "3"){
                 board[0][13] = 7.2;
                 board[13][0] = 7.1;
-                positionGhost2.x = 13;
-                positionGhost2.y = 0;
-                positionGhost3.x = 0;
-                positionGhost3.y = 13;
+                positionGhost3.i = i;
+                positionGhost3.j = j;
                 break;
             }
+
             if (map[i][j] === 1 || map[i][j] === 10) {
                 board[i][j] = 4;
             } else {
@@ -746,20 +755,28 @@ function Draw(key) {
 }
 
 function isMonsterPosition(x,y) {
-    if (x === positionGhost1.x && y === positionGhost1.y) {
+    if (x === positionGhost1.i && y === positionGhost1.j) {
         return true;
     }
-    if (x === positionGhost2.x && y === positionGhost2.y) {
+    if (x === positionGhost2.i && y === positionGhost2.j) {
         return true;
     }
-    return (x === positionGhost3.x && y === positionGhost3.y);
+    return (x === positionGhost3.i && y === positionGhost3.j);
 
 }
 
 function UpdatePosition() {
+
+    updateGhostLocation(positionGhost1, 7 , 0);
+    if(ghostAmount >= 2)
+        updateGhostLocation(positionGhost2 , 7.1 , 1);
+    if(ghostAmount === 3)
+        updateGhostLocation(positionGhost3 , 7.2 , 2);
+
     if (!isMonsterPosition(shape.i,shape.j)) {
         board[shape.i][shape.j] = 0;
     }
+
     if (!bonusRecieve) {
         moveExtra(bonus, 6,true, lastBonusId);
     }
@@ -821,7 +838,7 @@ function UpdatePosition() {
         //board[shape.i][shape.j] = 7;
         numberOfLives--;
         bonusRecieve = false;
-        clearInterval(interval);
+        //clearInterval(interval);
         if (numberOfLives === 0){
             window.alert("Game Over");
             music.pause();
@@ -946,3 +963,62 @@ function moveExtra(shape,index, isBonus, id){
         rand = Math.random();
     }
 }
+
+function updateGhostLocation(positionGhost, IdGhost ,typeGhost ) {
+    var ran = Math.random();
+    while (true) {
+        if (ran < 0.5) {
+            if (shape.j > positionGhost.j && positionGhost.j + 1 < 14 && board[positionGhost.i][positionGhost.j + 1] !== 4 && board[positionGhost.i][positionGhost.j + 1] !== 7 && board[positionGhost.i][positionGhost.j + 1] !== 7.1 && board[positionGhost.i][positionGhost.j + 1] !== 7.2) {
+                // if the ghost and the pacman in the same position
+                if (positionGhost.i === shape.i && positionGhost.j + 1 === shape.j) {
+                    // alert("hey");
+                }
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.j++;
+                savePositionOfFoodGhost(positionGhost, typeGhost);
+                board[positionGhost.i][positionGhost.j] = IdGhost; //new position of ghost
+                break;
+            } else if (shape.i < positionGhost.i && positionGhost.j - 1 >= 0 && board[positionGhost.i][positionGhost.j - 1] !== 4 && board[positionGhost.i][positionGhost.j - 1] !== 7 && board[positionGhost.i][positionGhost.j - 1] !== 7.1 && board[positionGhost.i][positionGhost.j - 1] !== 7.2) {
+                if (positionGhost.i === shape.i && positionGhost.j - 1 === shape.j) {
+                    // alert("hey");
+                }
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.j--;
+                savePositionOfFoodGhost(positionGhost, typeGhost);
+                board[positionGhost.i][positionGhost.j] = IdGhost; //new position of ghost
+                break;
+            }
+        } else {
+            if (shape.i > positionGhost.i && positionGhost.i < 14 && board[positionGhost.i + 1][positionGhost.j] !== 4 && board[positionGhost.i + 1][positionGhost.j] !== 7 && board[positionGhost.i + 1][positionGhost.j] !== 7.1 && board[positionGhost.i + 1][positionGhost.j] !== 7.2) {
+                // if the ghost and the pacman in the same position
+                if (positionGhost.i + 1 === shape.i && positionGhost.j === shape.j) {
+                    // alert("hey");
+                }
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.i++;
+                savePositionOfFoodGhost(positionGhost, typeGhost);
+                board[positionGhost.i][positionGhost.j] = IdGhost; //new position of ghost
+                break;
+
+            } else if (shape.i > positionGhost.i && positionGhost.i - 1 >= 0 && board[positionGhost.i - 1][positionGhost.j] !== 4 && board[positionGhost.i - 1][positionGhost.j] !== 7 && board[positionGhost.i - 1][positionGhost.j] !== 7.1 && board[positionGhost.i - 1][positionGhost.j] !== 7.2) {
+                if (positionGhost.i - 1 === shape.i && positionGhost.j === shape.j) {
+                    // alert("hey");
+                }
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.i--;
+                savePositionOfFoodGhost(positionGhost, typeGhost);
+                board[positionGhost.i][positionGhost.j] = IdGhost; //new position of ghost
+                break;
+            }
+        }
+        ran = Math.random();
+    }
+}
+
+
+function savePositionOfFoodGhost( positionGhost , typeGhost) {
+    savePosition[typeGhost][0] = positionGhost.i;
+    savePosition[typeGhost][1] = positionGhost.j;
+    savePosition[typeGhost][2] = board[positionGhost.i][positionGhost.j];
+}
+
