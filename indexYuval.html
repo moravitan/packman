@@ -227,21 +227,29 @@
         </form>
     </section>
 
-
+    <!--yuval add 5 - start - add id registrationLogIn -->
     <section id="Login">
-        <h1>Login</h1>
-        <b>User name: </b> <input type="text" class="text" id="userNameCheck" placeholder="please enter your user name">
-        <br>
-        <br>
-        <b>Password </b> <input type="password" class="text" id="PasswordCheck" placeholder="please enter your Password">
-        <br>
-        <br>
-        <button class="smallButtons" id="Connect" type="button" onClick="checkUser()"> Connect </button>
+        <form id="registrationLogIn">
+            <h1>Login</h1>
+            <b>User name: </b> <input type="text" class="text" id="userNameCheck" placeholder="please enter your user name">
+            <span id="userRequired" >  This field is required </span>
+            <br>
+            <br>
+            <b>Password </b> <input type="password" class="text" id="PasswordCheck" placeholder="please enter your Password">
+            <span id="passRequired">  This field is required </span>
+            <br>
+            <br>
+            <button class="smallButtons" id="Connect" type="button" onClick="checkUser()"> Connect </button>
+        </form>
     </section>
 
+
+    <!--yuval add 4 - start - add some <br>-->
     <section id="Settings">
         <h1>Settings</h1>
         <div id="leftScreen">
+            <br>
+            <br>
             <p> Choose Your Buttons: </p><br><br><br>
             <p> Food Amount: </p>
             <p> Monster Amount:</p>
@@ -250,15 +258,18 @@
             <p> 15 point color:</p>
             <p> 25 point color:</p>
         </div>
+        <!--yuval add 4 - end-->
+
+        <!--yuval add 3 - start - add class property for everybody-->
         <div id="rightScreen">
-            <input type="text" id="up" placeholder="Up button" maxlength="1">
+            <input type="text" id="up" class="property" placeholder="Up button" maxlength="1">
             <br>
-            <input type="text" id="left" placeholder="Left button" maxlength="1">
+            <input type="text" id="left" class="property" placeholder="Left button" maxlength="1">
             <br>
-            <input type="text" id="down" placeholder="down button" maxlength="1">
+            <input type="text" id="down" class="property" placeholder="down button" maxlength="1">
             <br>
-            <input type="text" id="right"  placeholder="right button" maxlength="1">
-            <br><br>
+            <input type="text" id="right"  class="property" placeholder="right button" maxlength="1">
+            <br>
             <input type="number" id="ballsAmount" class="property" min="50" max="90" value="50">
             <br>
             <input type="number" id="ghostAmount" class="property" min="1"  max="3">
@@ -271,23 +282,40 @@
             <br>
             <input type="color" id="25Points" value="#BA55D3">
         </div>
+        <!--yuval add 3 - end-->
+
         <div id="buttons">
             <button class="smallButtons" type="button" id="start"> Start </button>
             <button class="smallButtons" type="button" id="random"> Random </button>
         </div>
     </section>
-
-    <dialog id="aboutDialog" style="text-align: left;">
+    <!--yuval add 1 - start-->
+    <dialog id="aboutDialog" style="text-align: left;" onclick = "closeAboutDialogWithClick()">
         <h1>About</h1>
-        <div class="dialog">
-            <span> Submit: Kill Me Now!!!!!
+        <model class = "dialog">
+            <span class = "dialog">
+                <br>
+                Submit:
+                Mor Avitan and Yuval Zehavi
+                <br>
+                <br>
+                difficulties:
+                One of the difficulties we encountered in the work was
+                <br>
+                the security situation, there were many alarms in Be'er Sheva.
+                <br>
+                Professional level -
+                <br>
+                all the functionality of the monsters was not easy,
+                <br>
+                had to work in an orderly and serial and the tests were complicated.
                 <br>
                 <br>
             </span>
-        </div>
-        <button onclick="closeAboutDialog()" id="buttonClose" type="button">close</button>
+        </model>
+        <button onclick="closeAboutDialog()" class="smallButtons" type="button" >close</button>
     </dialog>
-
+    <!--yuval add 1 - end-->
     <section id="startGame">
         <div id="gameDetails">
             <p class="scores">Scores </p>
@@ -312,18 +340,22 @@
         <div id="board">
             <canvas id="canvas" height="370" width="380" ></canvas>
         </div>
-
     </section>
-
 </div><!--end content-->
 
+<!--yuval - add 6 - footer-->
+<footer>
+    <div id="footer">
+        <span>
+            <img class="footer" src="email.png" width=20px; height=20px;></img>
+        </span>
+        <a> Contact Us: moravit@post.bgu.ac.il , yuvalzeh@post.bgu.ac.il</a>
+    </div>
+</footer>
+<!--yuval - add 6 - end -->
 
-<div id="footer">
-
-</div><!--end header-->
 
 <!--<canvas id="canvas" height="505" width="505"></canvas>-->
-
 <script type="text/javascript" src=javascriptYuval.js></script>
 
 <script>

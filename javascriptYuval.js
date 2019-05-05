@@ -106,6 +106,8 @@ $("#submit").click(function () {
     var month = $("#month").val();
     var year = $("#year").val();
 
+
+
     if (userName.length === 0) {
         $("#userNameRequired").css("display", "inline-block");
         $("#userName").css("border","2px solid red");
@@ -142,6 +144,7 @@ $("#submit").click(function () {
         $("#emailRequired").css("display", "none");
 
         var isVerified = true;
+
 
         if (!firstName.match(/^[A-Za-z]+$/)){
             $("#firstNameRequired").text('Numbers or characters are not allowed here').css("display","inline-block");
@@ -196,6 +199,19 @@ function User (userName, password, firstName, lastName, email, birthday){
 function checkUser() {
     var passwordToCheck = document.getElementById("PasswordCheck").value;
     var userToCheck = document.getElementById("userNameCheck").value;
+
+    //yuval - add 7 -start
+    if (userNameCheck === 0){
+        $("#userToCheck").css("display", "inline-block");
+        $("#userToCheck").css("border","2px solid red");
+
+    }
+    if(PasswordCheck === 0){
+        $("#passwordToCheck").css("display", "inline-block");
+        $("#passwordToCheck").css("border","2px solid red");
+    }
+    //yuval - add 7 -end
+
     for (var i = 0; i < users.length; i++) {
         if (users[i].userName === userToCheck && users[i].password === passwordToCheck) {
             window.alert("Another moment and we start playing...");
@@ -205,16 +221,27 @@ function checkUser() {
         }
     }
     window.alert("There is mistake");
-
 }
 
 function showAboutDialog() {
     document.getElementById("aboutDialog").showModal();
 }
 
+//yuval add 2 - start
 function closeAboutDialog() {
-    document.getElementById("aboutDialog").close();
+    var dialog = document.getElementById("aboutDialog");
+    dialog.close();
 }
+
+function closeAboutDialogWithClick(){
+    var dialog = document.getElementById("aboutDialog");
+    window.onclick = function(event) {
+        if (event.target == dialog) {
+            dialog.close();
+        }
+    }
+}
+//yuval add 2 - end
 
 // get up button
 $("#up").keydown(function (event) {
