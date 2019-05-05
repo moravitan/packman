@@ -232,7 +232,8 @@ function checkUser() {
         if (users[i].userName === userToCheck && users[i].password === passwordToCheck) {
             window.alert("Another moment and we start playing...");
             document.getElementById('Login').style.display = 'none';
-            document.getElementById('Settings').style.display = 'block';
+            //document.getElementById('Settings').style.display = 'block';
+            showDiv('Settings');
             return;
         }
     }
