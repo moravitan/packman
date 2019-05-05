@@ -4,10 +4,12 @@
 <head>
     <title> Yuv & Mor </title>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <script type="text/javascript" src="jquery.js"></script>
+
 </head>
 
 <body>
-<script type="text/javascript" src="jquery.js"></script>
+
 <div id="header">
     <img class="logo" src="logo.png" width=210px; height=80px; >
 
@@ -18,7 +20,7 @@
         <li><a href="#" onClick="showDiv('Welcome')"> Welcome </a></li>
         <li><a href="#" onClick="showDiv('Register')"> Register </a></li>
         <li><a href="#" onClick="showDiv('Login')"> login </a></li>
-        <li><a href="#" onClick="showDiv('Settings')"> Settings </a></li>
+<!--        <li><a href="#" onClick="showDiv('Settings')"> Settings </a></li>-->
         <li><a href="#" onclick="showAboutDialog()"> About </a></li>
     </ul>
 
@@ -277,19 +279,33 @@
         </div>
     </section>
 
-    <dialog id="aboutDialog" style="text-align: left;">
+    <dialog id="aboutDialog" style="text-align: left;" onclick = "closeAboutDialogWithClick()">
         <h1>About</h1>
-        <div class="dialog">
-            <span> Submit: Kill Me Now!!!!!
+        <model class = "dialog">
+            <span class = "dialog">
+                <br>
+                Submit:
+                Mor Avitan and Yuval Zehavi
+                <br>
+                <br>
+                difficulties:
+                One of the difficulties we encountered in the work was
+                <br>
+                the security situation, there were many alarms in Be'er Sheva.
+                <br>
+                Professional level -
+                <br>
+                all the functionality of the monsters was not easy,
+                <br>
+                had to work in an orderly and serial and the tests were complicated.
                 <br>
                 <br>
             </span>
-        </div>
-        <button onclick="closeAboutDialog()" id="buttonClose" type="button">close</button>
+        </model>
+        <button onclick="closeAboutDialog()" class="smallButtons" type="button" >close</button>
     </dialog>
 
     <section id="startGame">
-
         <div id="gameDetails">
             <p class="scores">Scores </p>
             <p class="scores" id = "score">0</p>
@@ -319,19 +335,25 @@
 </div><!--end content-->
 
 
-<div id="footer">
+<footer>
+    <div id="footer">
+        <span>
+            <!img class="footer" src="email.png" width=20px; height=20px;>
+        </span>
+        <a> Contact Us: moravit@post.bgu.ac.il , yuvalzeh@post.bgu.ac.il</a>
+    </div>
+</footer><!--end header-->
 
-</div><!--end header-->
 
 <!--<canvas id="canvas" height="505" width="505"></canvas>-->
 
-<script type="text/javascript" src=javascript.js></script>
-
 <script>
     $(document).ready(function () {
-        start();
+        load();
     });
 </script>
+<script type="text/javascript" src=javascript.js></script>
+
 </body>
 
 </html>

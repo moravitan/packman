@@ -1045,110 +1045,150 @@ function updateGhostLocation(positionGhost, IdGhost ,typeGhost ) {
     // var isMoved = moveGhost(positionGhost,IdGhost, typeGhost);
     var isMoved = false;
     // while (true) {
-        if (ran < 0.5) {
-            if (shape.j > positionGhost.j) {
-                if (shape.i === positionGhost.i) {
-                    if (isPossibleMoveForGhost(positionGhost.i, positionGhost.j + 1)) {
-                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                        positionGhost.j++;
-                        isMoved = true;
-                        // break;
-                    } else if (rand < 0.25 && isPossibleMoveForGhost(positionGhost.i + 1, positionGhost.j)) {
-                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                        positionGhost.i++;
-                        isMoved = true;
-                        // break;
-                    } else if (isPossibleMoveForGhost(positionGhost.i - 1, positionGhost.j)) {
-                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                        positionGhost.i--;
-                        isMoved = true;
-                        // break;
-                    }
-                } else if (isPossibleMoveForGhost(positionGhost.i, positionGhost.j + 1)) {
+    if (ran < 0.5) {
+        if (shape.j > positionGhost.j) {
+            if (shape.i === positionGhost.i) {
+                if (isPossibleMoveForGhost(positionGhost.i, positionGhost.j + 1)) {
                     board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
                     positionGhost.j++;
                     isMoved = true;
                     // break;
-                }
-            } else if (shape.j < positionGhost.j) {
-                if (shape.i === positionGhost.i) {
-                    if (isPossibleMoveForGhost(positionGhost.i, positionGhost.j - 1)) {
-                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                        positionGhost.j++;
-                        isMoved = true;
-                        // break;
-                    } else if (rand < 0.25 && isPossibleMoveForGhost(positionGhost.i + 1, positionGhost.j)) {
-                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                        positionGhost.i++;
-                        isMoved = true;
-                        // break;
-                    } else if (isPossibleMoveForGhost(positionGhost.i - 1, positionGhost.j)) {
-                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                        positionGhost.i--;
-                        isMoved = true;
-                        // break;
-                    }
-                } else if (isPossibleMoveForGhost(positionGhost.i, positionGhost.j - 1)) {
-                    board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                    positionGhost.j--;
-                    isMoved = true;
-                    // break;
-                }
-            }
-        } else {
-            if (shape.i > positionGhost.i) {
-                if (shape.j === positionGhost.j){
-                    if (isPossibleMoveForGhost(positionGhost.i + 1, positionGhost.j)){
-                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                        positionGhost.i++;
-                        isMoved = true;
-                        // break;
-                    }
-                    else if (rand < 0.25 && isPossibleMoveForGhost(positionGhost.i , positionGhost.j + 1)){
-                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                        positionGhost.j++;
-                        isMoved = true;
-                        // break;
-                    }
-                    else if (isPossibleMoveForGhost(positionGhost.i , positionGhost.j - 1)){
-                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                        positionGhost.j--;
-                        isMoved = true;
-                        // break;
-                    }
-                } else if (isPossibleMoveForGhost(positionGhost.i + 1, positionGhost,j)){
+                } else if (rand < 0.25 && isPossibleMoveForGhost(positionGhost.i + 1, positionGhost.j)) {
                     board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
                     positionGhost.i++;
                     isMoved = true;
                     // break;
-                }
-            } else if (shape.i < positionGhost.i) {
-                if (shape.j === positionGhost.j){
-                    if (isPossibleMoveForGhost(positionGhost.i - 1, positionGhost.j)){
-                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                        positionGhost.i--;
-                        isMoved = true;
-                        // break;
-                    }
-                    else if (rand < 0.25 && isPossibleMoveForGhost(positionGhost.i, positionGhost.j + 1)){
-                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                        positionGhost.j++;
-                        isMoved = true;
-                        // break;
-                    }
-                    else if (isPossibleMoveForGhost(positionGhost.i, positionGhost.j - 1)){
-                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                        positionGhost.j--;
-                        isMoved = true;
-                        // break;
-                    }
-                } else if (isPossibleMoveForGhost(positionGhost.i - 1, positionGhost.j)){
+                } else if (isPossibleMoveForGhost(positionGhost.i - 1, positionGhost.j)) {
                     board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
                     positionGhost.i--;
                     isMoved = true;
                     // break;
                 }
+            } else if (isPossibleMoveForGhost(positionGhost.i, positionGhost.j + 1)) {
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.j++;
+                isMoved = true;
+                // break;
             }
+            else if (shape.i > positionGhost.i && isPossibleMoveForGhost(positionGhost.i + 1, positionGhost.j)){
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.i++;
+                isMoved = true;
+            }
+            else if (shape.i < positionGhost.i && isPossibleMoveForGhost(positionGhost.i - 1, positionGhost.j)){
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.i--;
+                isMoved = true;
+            }
+        } else if (shape.j < positionGhost.j) {
+            if (shape.i === positionGhost.i) {
+                if (isPossibleMoveForGhost(positionGhost.i, positionGhost.j - 1)) {
+                    board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                    positionGhost.j++;
+                    isMoved = true;
+                    // break;
+                } else if (rand < 0.25 && isPossibleMoveForGhost(positionGhost.i + 1, positionGhost.j)) {
+                    board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                    positionGhost.i++;
+                    isMoved = true;
+                    // break;
+                } else if (isPossibleMoveForGhost(positionGhost.i - 1, positionGhost.j)) {
+                    board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                    positionGhost.i--;
+                    isMoved = true;
+                    // break;
+                }
+            } else if (isPossibleMoveForGhost(positionGhost.i, positionGhost.j - 1)) {
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.j--;
+                isMoved = true;
+                // break;
+            }
+            else if (shape.i > positionGhost.i && isPossibleMoveForGhost(positionGhost.i + 1, positionGhost.j)){
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.i++;
+                isMoved = true;
+            }
+            else if (shape.i < positionGhost.i && isPossibleMoveForGhost(positionGhost.i - 1, positionGhost.j)){
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.i--;
+                isMoved = true;
+            }
+        }
+        else if (isPossibleMoveForGhost(positionGhost.i , positionGhost.j - 1)){
+            board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+            positionGhost.j--;
+        }
+    } else {
+        if (shape.i > positionGhost.i) {
+            if (shape.j === positionGhost.j){
+                if (isPossibleMoveForGhost(positionGhost.i + 1, positionGhost.j)){
+                    board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                    positionGhost.i++;
+                    isMoved = true;
+                    // break;
+                }
+                else if (rand < 0.25 && isPossibleMoveForGhost(positionGhost.i , positionGhost.j + 1)){
+                    board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                    positionGhost.j++;
+                    isMoved = true;
+                    // break;
+                    isMoved = true;
+                    // break;
+                }
+            } else if (isPossibleMoveForGhost(positionGhost.i + 1, positionGhost,j)){
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.i++;
+                isMoved = true;
+                // break;
+            }
+            else if (shape.j > positionGhost.j && isPossibleMoveForGhost(positionGhost.i, positionGhost.j + 1)){
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.j++;
+                isMoved = true;
+            }
+            else if (shape.j < positionGhost.j && isPossibleMoveForGhost(positionGhost.i, positionGhost.j - 1)){
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.j--;
+                isMoved = true;
+            }
+        } else if (shape.i < positionGhost.i) {
+            if (shape.j === positionGhost.j){
+                if (isPossibleMoveForGhost(positionGhost.i - 1, positionGhost.j)){
+                    board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                    positionGhost.i--;
+                    isMoved = true;
+                    // break;
+                }
+                else if (rand < 0.25 && isPossibleMoveForGhost(positionGhost.i, positionGhost.j + 1)){
+                    board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                    positionGhost.j++;
+                    isMoved = true;
+                    // break;
+                }
+                else if (isPossibleMoveForGhost(positionGhost.i, positionGhost.j - 1)){
+                    board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                    positionGhost.j--;
+                    isMoved = true;
+                    // break;
+                }
+            } else if (isPossibleMoveForGhost(positionGhost.i - 1, positionGhost.j)){
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.i--;
+                isMoved = true;
+                // break;
+            }
+            else if (shape.j > positionGhost.j && isPossibleMoveForGhost(positionGhost.i, positionGhost.j + 1)){
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.j++;
+                isMoved = true;
+            }
+            else if (shape.j < positionGhost.j && isPossibleMoveForGhost(positionGhost.i, positionGhost.j - 1)){
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.j--;
+                isMoved = true;
+            }
+        }
 
         }
     //     ran = Math.random();
