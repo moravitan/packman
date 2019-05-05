@@ -43,6 +43,7 @@
     background-color: #111;
     height: 100%;
 }
+
 h1{
     font-family: fantasy, blippo;
     font-size: 34px;
@@ -68,6 +69,7 @@ button.Buttons, input.Buttons  {
 button.text, input.text{
     text-align: center;
 }
+
 #content{
     background-color: rgb(153, 204, 255);
     position:absolute;
@@ -76,6 +78,7 @@ button.text, input.text{
     width:100%;
     height:70%;
 }
+
 #content #Welcome #loginButton{
     top: 50%;
     height: 10%;
@@ -93,14 +96,12 @@ button.text, input.text{
 
 #registration{
     max-width: 70%;
-    /*margin: auto;*/
     margin-left: 3%;
     padding-left: 10%;
     padding-top: 1.5%;
     padding-bottom: 3%;
     font-weight: bold;
     text-align: center;
-
 }
 
 #registration input{
@@ -111,19 +112,15 @@ button.text, input.text{
     text-align: center;
 }
 
-
-
-/*#registration button{
+#registration button{
     margin-left: 17%;
     width: 13%;
     height: 1%;
-}*/
+}
 
 #Login{
     text-align: center;
 }
-#Login button{}
-#Login input{}
 
 #registration span{
     display: none;
@@ -131,66 +128,53 @@ button.text, input.text{
     font-weight: bold;
 }
 
+#registrationLogIn span{
+    display: none;
+    color: red;
+    font-weight: bold;
+}
+
+
 .birthday{
     margin-bottom: 1%;
 }
 
-#aboutDialog {
-    /*position: absolute;*/
-    /*left: 0px;*/
-    /*right: 0px;*/
-    /*color: black;*/
-    /*margin: auto;*/
-    /*border-width: initial;*/
-    /*border-style: solid;*/
-    /*border-color: initial;*/
-    /*border-image: initial;*/
-    /*padding: 1em;*/
-    /*background: white;*/
-}
-
-#buttonClose{
-    background-color: rgb(153,153,255);
-    width: 40%;
-    margin-left: 30%;
-    margin-right: 30%;
-}
-
 #aboutDialog{
+    font-family: "Calibri Light", serif;
+    font-size:20px;
+    font-weight:bold;
+    border: 4px solid rgb(153,153,255);
+    position: absolute;
+}
+
+.dialog{
+    text-align: center;
     width: 88%;
     padding-top: 5%;
     padding-bottom: 5%;
     padding-left: 5%;
     font-family:"Calibri Light", serif;
-    font-size:14px;
+    font-size:16px;
     font-weight:bold;
-    border: 4px solid rgb(153,153,255);
+    text-align: center;
 }
-
-#buttonClose{
-
-}
-
 
 #Settings #leftScreen{
     position:absolute;
-    top: 18%;
-    margin-left: 30%;
+    top: 12%;
+    margin-left: 35%;
     float: left;
     font-weight: bold;
-
+    font-size: 14px;
 }
 
 #Settings #rightScreen{
-
     margin-right: 40%;
     float: right;
-
-
 }
 
 .property {
-    margin-bottom: 10%;
+    margin-bottom: 3%;
 }
 
 #Settings #buttons{
@@ -198,19 +182,17 @@ button.text, input.text{
     top: 93%;
     display: inline;
     left: 43%;
-
-
 }
 
 .smallButtons{
     background-color: rgb(153, 153, 255);
     color: white;
-    border: none;
     text-align: center;
     font-size: 15px;
     display: inline-block;
     cursor: pointer;
     font-family: "Comic Sans MS";
+    border-radius: 8px;
 }
 
 /*#Settings #start{
@@ -228,16 +210,25 @@ button.text, input.text{
     height: 90%;
     width: 40%;
     /*background: rgb(204, 255, 255);*/
-    background: white;
+    background: rgb(204, 255, 255);
     margin-left: 30%;
-    border: 2px solid black;
+    border: 2px outset black;
+    border-radius: 8px;
+
 }
 
-#startGame #gameDetails{
-    top:2%;
+#gameDetails{
+    top: 14%;
+    left: 8%;
     position: absolute;
     padding: 1%;
-    /*background: aliceblue;*/
+    background: rgb(204, 255, 255);
+    border-radius: 8px;
+    border-style: outset;
+    font-family: menu, sans-serif;;
+    border-color: black;
+
+
 }
 
 .scores{
@@ -267,4 +258,34 @@ button.text, input.text{
     left:0;
     width:100%;
     height:5%;
+    text-align: center;
+    padding-top: 7px;
+    font-family: menu, sans-serif;;
+    color: white;
+    font-size: 12px;
 }
+
+.footer{
+    margin: -5px 0px;
+}
+
+.smallButtonsGame{
+    float: right;
+    margin-right: 10%;
+    top: 40%;
+    margin-top: 10%;
+
+
+}
+
+.ButtonsGame{
+    background-color: rgb(153, 153, 255);
+    color: white;
+    border: none;
+    text-align: center;
+    font-size: 15px;
+    /*display: inline-block;*/
+    cursor: pointer;
+    font-family: "Comic Sans MS";
+}
+
