@@ -269,4 +269,23 @@ button.text, input.text{
     height:5%;
 }
 
+.smallButtonsGame{
+    float: right;
+    margin-right: 10%;
+    top: 40%;
+    margin-top: 10%;
+
+
+}
+
+.ButtonsGame{
+    background-color: rgb(153, 153, 255);
+    color: white;
+    border: none;
+    text-align: center;
+    font-size: 15px;
+    /*display: inline-block;*/
+    cursor: pointer;
+    font-family: "Comic Sans MS";
+}
 

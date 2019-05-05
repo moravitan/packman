@@ -81,7 +81,6 @@ function start(){
 
 
 function showDiv(id){
-
     // clearInterval(interval);
     if (id !== 'startGame') {
         music.pause();
@@ -461,6 +460,7 @@ function setGameParameters() {
 
 
 function StartGame() {
+    // clearInterval(interval);
     board = new Array();
     score = 0;
     pac_color = "yellow";
@@ -508,7 +508,7 @@ function StartGame() {
                 if (randomNum <= 1.0 * food_remain / cnt) {
                     food_remain--;
                     board[i][j] = 1;
-                } else if (randomNum < 1.0 * (pacman_remain + food_remain) / cnt) {
+                } else if (/*i !== 0 && j !== 0 && i !== 13 && j !== 13 &&*/ randomNum < 1.0 * (pacman_remain + food_remain) / cnt) {
                     shape.i = i;
                     shape.j = j;
                     pacman_remain--;
@@ -765,17 +765,30 @@ function isMonsterPosition(x,y) {
 
 }
 
+function getMonsterIndex(i, j) {
+    if (i === positionGhost1.i && j === positionGhost1.j){
+        return 7;
+    }
+    if (i === positionGhost2.i && j === positionGhost2.j){
+        return 7.1;
+    }
+     return 7.2;
+}
+
 function UpdatePosition() {
 
     updateGhostLocation(positionGhost1, 7 , 0);
-    if(ghostAmount >= 2)
-        updateGhostLocation(positionGhost2 , 7.1 , 1);
-    if(ghostAmount === 3)
-        updateGhostLocation(positionGhost3 , 7.2 , 2);
+    if(ghostAmount >= 2) {
+        updateGhostLocation(positionGhost2, 7.1, 1);
+    }
+    if(ghostAmount === 3) {
+        updateGhostLocation(positionGhost3, 7.2, 2);
+    }
 
     if (!isMonsterPosition(shape.i,shape.j)) {
         board[shape.i][shape.j] = 0;
     }
+
 
     if (!bonusRecieve) {
         moveExtra(bonus, 6,true, lastBonusId);
@@ -787,7 +800,7 @@ function UpdatePosition() {
 
     var x = GetKeyPressed();
     if (x === 1) {
-        if (shape.j > 0 && (board[shape.i][shape.j - 1] !== 4 /*&& !isMonsterPosition(shape.i,shape.j-1)*/)) {
+        if (shape.j > 0 && board[shape.i][shape.j - 1] !== 4 /*&& !isMonsterPosition(shape.i,shape.j-1)*/) {
             shape.j--;
         }
         direction = "UP";
@@ -799,7 +812,7 @@ function UpdatePosition() {
         direction = "DOWN";
     }
     if (x === 3) {
-        if (shape.i > 0 && board[shape.i - 1][shape.j] !== 4/* && !isMonsterPosition(shape.i - 1,shape.j)*/) {
+        if (shape.i > 0 && board[shape.i - 1][shape.j] !== 4  /*&& !isMonsterPosition(shape.i - 1,shape.j)*/) {
             shape.i--;
         }
         direction = "LEFT";
@@ -833,25 +846,17 @@ function UpdatePosition() {
         // board[bonus.i][bonus.j] = lastBonusId;
 
     }
-
     if (isMonsterPosition(shape.i,shape.j)){
-        //board[shape.i][shape.j] = 7;
-        numberOfLives--;
-        bonusRecieve = false;
-        //clearInterval(interval);
-        if (numberOfLives === 0){
+        board[shape.i][shape.j] = getMonsterIndex(shape.i,shape.j);
+        if (numberOfLives === 1){
             window.alert("Game Over");
             music.pause();
             showDiv('Settings');
+            clearInterval();
         }
-        else {
-            countFive = 0;
-            countFifteen = 0;
-            countTwentyfive = 0;
-            score = 0;
-            time_elapsed = 0;
-            StartGame();
-            showDiv('startGame');
+        else{
+            alert("You lost");
+            clearInterval(interval);
         }
     }
     else {
@@ -875,6 +880,7 @@ function UpdatePosition() {
             Draw(direction);
         }
     }
+
 }
 
 function setColors(){
@@ -1022,3 +1028,22 @@ function savePositionOfFoodGhost( positionGhost , typeGhost) {
     savePosition[typeGhost][2] = board[positionGhost.i][positionGhost.j];
 }
 
+function startNewGame(){
+    showDiv('Settings');
+}
+
+function startAgain(){
+    //board[shape.i][shape.j] = 7;
+    numberOfLives--;
+    bonusRecieve = false;
+    clearInterval(interval);
+    countFive = 0;
+    countFifteen = 0;
+    countTwentyfive = 0;
+    score = 0;
+    time_elapsed = 0;
+    direction = "RIGHT";
+    StartGame();
+    showDiv('startGame');
+
+}
