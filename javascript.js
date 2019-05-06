@@ -53,6 +53,7 @@ var heart = new Object();
 var lastHeartId = 1;
 var heartRecieve = false;
 
+var isLost = false;
 
 var map = [
     [7,0,0,0,0,0,0,0,0,0,0,0,0,7.2],
@@ -553,7 +554,7 @@ function StartGame() {
                 if (randomNum <= 1.0 * food_remain / cnt) {
                     food_remain--;
                     board[i][j] = 1;
-                } else if (i !== 0 && j !== 0 && i !== 13 && j !== 13 && randomNum < 1.0 * (pacman_remain + food_remain) / cnt) {
+                } else if (i !== 0 && j !== 0 && i !== 13 && j !== 13  && pacman_remain > 0/*&& randomNum < 1.0 * (pacman_remain + food_remain) / cnt*/) {
                     shape.i = i;
                     shape.j = j;
                     pacman_remain--;
@@ -594,7 +595,7 @@ function StartGame() {
         keysDown[e.code] = false;
     }, false);
     interval = setInterval(UpdatePosition, 250);
-     //intervalBonus = setInterval(moveBonus,250);
+    //intervalBonus = setInterval(moveBonus,250);
 }
 
 
@@ -799,14 +800,14 @@ function Draw(key) {
 
 }
 
-function isMonsterPosition(x,y) {
-    if (x === positionGhost1.i && y === positionGhost1.j) {
+function isMonsterPosition(i,j) {
+    if (i === positionGhost1.i && j === positionGhost1.j) {
         return true;
     }
-    if (x === positionGhost2.i && y === positionGhost2.j) {
+    if (ghostAmount >=2 && i === positionGhost2.i && j === positionGhost2.j) {
         return true;
     }
-    return (x === positionGhost3.i && y === positionGhost3.j);
+    return (ghostAmount ===3 && i === positionGhost3.i && j === positionGhost3.j);
 
 }
 
@@ -814,14 +815,16 @@ function getMonsterIndex(i, j) {
     if (i === positionGhost1.i && j === positionGhost1.j){
         return 7;
     }
-    if (i === positionGhost2.i && j === positionGhost2.j){
+    if (ghostAmount >=2 && i === positionGhost2.i && j === positionGhost2.j){
         return 7.1;
     }
     return 7.2;
 }
 
 function UpdatePosition() {
-
+    if (!isLost) {
+        board[shape.i][shape.j] = 0;
+    }
     updateGhostLocation(positionGhost1, 7 , 0);
     if(ghostAmount >= 2) {
         updateGhostLocation(positionGhost2, 7.1, 1);
@@ -830,11 +833,20 @@ function UpdatePosition() {
         updateGhostLocation(positionGhost3, 7.2, 2);
     }
 
-    if (!isMonsterPosition(shape.i,shape.j)) {
-        board[shape.i][shape.j] = 0;
+    if (isLost){
+        board[shape.i][shape.j] = getMonsterIndex(shape.i,shape.j);
+        Draw(direction);
+        if (numberOfLives === 1){
+            window.alert("Game Over");
+            music.pause();
+            showDiv('Settings');
+            clearInterval();
+        }
+        else{
+            alert("You lost");
+            clearInterval(interval);
+        }
     }
-
-
     if (!bonusRecieve) {
         moveExtra(bonus, 6,true, lastBonusId);
     }
@@ -870,14 +882,17 @@ function UpdatePosition() {
     }
     if (board[shape.i][shape.j] === 5) {
         score+=5;
+        fivePointsFood--;
     }
     if (board[shape.i][shape.j] === 15) {
         score+=15;
+        fifteenPointsFood--;
     }
     if (board[shape.i][shape.j] === 25) {
         score+=25;
+        twentyfivePointsFood--;
     }
-    if (shape.i === bonus.i && shape.j === bonus.j){
+    if (shape.i === bonus.i && shape.j === bonus.j && board[shape.i][shape.j] === 50){
         score +=50;
         board[bonus.i][bonus.j] = 2;
         bonusRecieve = true;
@@ -909,9 +924,6 @@ function UpdatePosition() {
         board[shape.i][shape.j] = 2;
         var currentTime = new Date();
         time_elapsed = Math.floor((currentTime - start_time) / 1000);
-        if (score >= 20 && time_elapsed <= 10) {
-            pac_color = "green";
-        }
         if (score === (5 * countFive + 15 * countFifteen + 25 * countTwentyfive)) {
             window.clearInterval(interval);
             window.alert("Game completed");
@@ -966,14 +978,14 @@ function isLegalPosition(x, y, isBonus) {
         if (!isBonus) {
             isLegal = board[x][y] !== 6; // the shape is heart and the new location isn't bonus
         }
-        return isLegal && board[x][y] !== 4;
+        return isLegal && board[x][y] !== 4 && board[x][y] !== 7 && board[x][y] !== 7.1 && board[x][y] !== 7.2;
     }
     return false;
 }
 
 function moveExtra(shape,index, isBonus, id){
     var rand = Math.random();
-    while (true) {
+    // while (true) {
         if (rand < 0.5) {
             if (isLegalPosition(shape.i + 1, shape.j, isBonus)) {
                 board[shape.i][shape.j] = id;
@@ -982,7 +994,7 @@ function moveExtra(shape,index, isBonus, id){
                     id = board[shape.i][shape.j];
                 }
                 board[shape.i][shape.j] = index;
-                break;
+                // break;
             }
             if (isLegalPosition(shape.i - 1, shape.j, isBonus)) {
                 board[shape.i][shape.j] = id;
@@ -991,7 +1003,7 @@ function moveExtra(shape,index, isBonus, id){
                     id = board[shape.i][shape.j];
                 }
                 board[shape.i][shape.j] = index;
-                break;
+                // break;
             }
         }
         else {
@@ -1002,7 +1014,7 @@ function moveExtra(shape,index, isBonus, id){
                     id = board[shape.i][shape.j];
                 }
                 board[shape.i][shape.j] = index;
-                break;
+                // break;
             }
 
             if (isLegalPosition(shape.i, shape.j - 1, isBonus)) {
@@ -1012,67 +1024,143 @@ function moveExtra(shape,index, isBonus, id){
                     id = board[shape.i][shape.j];
                 }
                 board[shape.i][shape.j] = index;
-                break;
+                // break;
             }
         }
-        rand = Math.random();
-    }
+        // rand = Math.random();
+    // }
 }
 
 function isPossibleMoveForGhost(i, j) {
-    return board[i][j] !== 4 && board[i][j] !== 7 && board[i][j] !== 7.1 && board[i][j] !== 7.2 &&
-                board[i][j] !== 6 && board[i][j] !== 8;
+    if (i >= 0 && i < 14 && j >= 0 && j < 14){
+        return board[i][j] !== 4 && board[i][j] !== 7 && board[i][j] !== 7.1 && board[i][j] !== 7.2 &&
+            board[i][j] !== 6 && board[i][j] !== 8;
+    }
+    return false;
+
 }
 
 function updateGhostLocation(positionGhost, IdGhost ,typeGhost ) {
     var ran = Math.random();
+    // var isMoved = moveGhost(positionGhost,IdGhost, typeGhost);
+    var isMoved = false;
     // while (true) {
         if (ran < 0.5) {
-            if (shape.j > positionGhost.j && positionGhost.j + 1 < 14 && isPossibleMoveForGhost(positionGhost.i,positionGhost.j +1)) {
-                // if the ghost and the pacman in the same position
-                if (positionGhost.i === shape.i && positionGhost.j + 1 === shape.j) {
-                    // alert("hey");
+            if (shape.j > positionGhost.j) {
+                if (shape.i === positionGhost.i) {
+                    if (isPossibleMoveForGhost(positionGhost.i, positionGhost.j + 1)) {
+                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                        positionGhost.j++;
+                        isMoved = true;
+                        // break;
+                    } else if (rand < 0.25 && isPossibleMoveForGhost(positionGhost.i + 1, positionGhost.j)) {
+                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                        positionGhost.i++;
+                        isMoved = true;
+                        // break;
+                    } else if (isPossibleMoveForGhost(positionGhost.i - 1, positionGhost.j)) {
+                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                        positionGhost.i--;
+                        isMoved = true;
+                        // break;
+                    }
+                } else if (isPossibleMoveForGhost(positionGhost.i, positionGhost.j + 1)) {
+                    board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                    positionGhost.j++;
+                    isMoved = true;
+                    // break;
                 }
-                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                positionGhost.j++;
-                savePositionOfFoodGhost(positionGhost, typeGhost);
-                board[positionGhost.i][positionGhost.j] = IdGhost; //new position of ghost
-                // break;
-            } else if (shape.j < positionGhost.j && positionGhost.j - 1 >= 0 && isPossibleMoveForGhost(positionGhost.i,positionGhost.j - 1)){
-                if (positionGhost.i === shape.i && positionGhost.j - 1 === shape.j) {
-                    // alert("hey");
+            } else if (shape.j < positionGhost.j) {
+                if (shape.i === positionGhost.i) {
+                    if (isPossibleMoveForGhost(positionGhost.i, positionGhost.j - 1)) {
+                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                        positionGhost.j++;
+                        isMoved = true;
+                        // break;
+                    } else if (rand < 0.25 && isPossibleMoveForGhost(positionGhost.i + 1, positionGhost.j)) {
+                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                        positionGhost.i++;
+                        isMoved = true;
+                        // break;
+                    } else if (isPossibleMoveForGhost(positionGhost.i - 1, positionGhost.j)) {
+                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                        positionGhost.i--;
+                        isMoved = true;
+                        // break;
+                    }
+                } else if (isPossibleMoveForGhost(positionGhost.i, positionGhost.j - 1)) {
+                    board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                    positionGhost.j--;
+                    isMoved = true;
+                    // break;
                 }
-                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                positionGhost.j--;
-                savePositionOfFoodGhost(positionGhost, typeGhost);
-                board[positionGhost.i][positionGhost.j] = IdGhost; //new position of ghost
-                // break;
             }
         } else {
-            if (shape.i > positionGhost.i && positionGhost.i < 14 && isPossibleMoveForGhost(positionGhost.i + 1,positionGhost.j)) {
-                // if the ghost and the pacman in the same position
-                if (positionGhost.i + 1 === shape.i && positionGhost.j === shape.j) {
-                    // alert("hey");
+            if (shape.i > positionGhost.i) {
+                if (shape.j === positionGhost.j){
+                    if (isPossibleMoveForGhost(positionGhost.i + 1, positionGhost.j)){
+                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                        positionGhost.i++;
+                        isMoved = true;
+                        // break;
+                    }
+                    else if (rand < 0.25 && isPossibleMoveForGhost(positionGhost.i , positionGhost.j + 1)){
+                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                        positionGhost.j++;
+                        isMoved = true;
+                        // break;
+                    }
+                    else if (isPossibleMoveForGhost(positionGhost.i , positionGhost.j - 1)){
+                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                        positionGhost.j--;
+                        isMoved = true;
+                        // break;
+                    }
+                } else if (isPossibleMoveForGhost(positionGhost.i + 1, positionGhost,j)){
+                    board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                    positionGhost.i++;
+                    isMoved = true;
+                    // break;
                 }
-                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                positionGhost.i++;
-                savePositionOfFoodGhost(positionGhost, typeGhost);
-                board[positionGhost.i][positionGhost.j] = IdGhost; //new position of ghost
-                // break;
-
-            } else if (shape.i > positionGhost.i && positionGhost.i - 1 >= 0  && isPossibleMoveForGhost(positionGhost.i - 1,positionGhost.j)) {
-                if (positionGhost.i - 1 === shape.i && positionGhost.j === shape.j) {
-                    // alert("hey");
+            } else if (shape.i < positionGhost.i) {
+                if (shape.j === positionGhost.j){
+                    if (isPossibleMoveForGhost(positionGhost.i - 1, positionGhost.j)){
+                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                        positionGhost.i--;
+                        isMoved = true;
+                        // break;
+                    }
+                    else if (rand < 0.25 && isPossibleMoveForGhost(positionGhost.i, positionGhost.j + 1)){
+                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                        positionGhost.j++;
+                        isMoved = true;
+                        // break;
+                    }
+                    else if (isPossibleMoveForGhost(positionGhost.i, positionGhost.j - 1)){
+                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                        positionGhost.j--;
+                        isMoved = true;
+                        // break;
+                    }
+                } else if (isPossibleMoveForGhost(positionGhost.i - 1, positionGhost.j)){
+                    board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                    positionGhost.i--;
+                    isMoved = true;
+                    // break;
                 }
-                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                positionGhost.i--;
-                savePositionOfFoodGhost(positionGhost, typeGhost);
-                board[positionGhost.i][positionGhost.j] = IdGhost; //new position of ghost
-                // break;
             }
+
         }
     //     ran = Math.random();
     // }
+
+    if (isMoved){
+        savePositionOfFoodGhost(positionGhost, typeGhost);
+        if (board[positionGhost.i][positionGhost.j] === 2) {
+            isLost = true;
+        }
+        board[positionGhost.i][positionGhost.j] = IdGhost;
+    }
 }
 
 
