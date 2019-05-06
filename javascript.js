@@ -986,48 +986,48 @@ function isLegalPosition(x, y, isBonus) {
 function moveExtra(shape,index, isBonus, id){
     var rand = Math.random();
     // while (true) {
-        if (rand < 0.5) {
-            if (isLegalPosition(shape.i + 1, shape.j, isBonus)) {
-                board[shape.i][shape.j] = id;
-                shape.i++;
-                if (board[shape.i][shape.j] !== 2) {
-                    id = board[shape.i][shape.j];
-                }
-                board[shape.i][shape.j] = index;
-                // break;
+    if (rand < 0.5) {
+        if (isLegalPosition(shape.i + 1, shape.j, isBonus)) {
+            board[shape.i][shape.j] = id;
+            shape.i++;
+            if (board[shape.i][shape.j] !== 2) {
+                id = board[shape.i][shape.j];
             }
-            if (isLegalPosition(shape.i - 1, shape.j, isBonus)) {
-                board[shape.i][shape.j] = id;
-                bonus.i--;
-                if (board[shape.i][shape.j] !== 2) {
-                    id = board[shape.i][shape.j];
-                }
-                board[shape.i][shape.j] = index;
-                // break;
-            }
+            board[shape.i][shape.j] = index;
+            // break;
         }
-        else {
-            if (isLegalPosition(shape.i, shape.j + 1, isBonus)) {
-                board[shape.i][shape.j] = id;
-                shape.j++;
-                if (board[shape.i][shape.j] !== 2) {
-                    id = board[shape.i][shape.j];
-                }
-                board[shape.i][shape.j] = index;
-                // break;
+        if (isLegalPosition(shape.i - 1, shape.j, isBonus)) {
+            board[shape.i][shape.j] = id;
+            bonus.i--;
+            if (board[shape.i][shape.j] !== 2) {
+                id = board[shape.i][shape.j];
             }
+            board[shape.i][shape.j] = index;
+            // break;
+        }
+    }
+    else {
+        if (isLegalPosition(shape.i, shape.j + 1, isBonus)) {
+            board[shape.i][shape.j] = id;
+            shape.j++;
+            if (board[shape.i][shape.j] !== 2) {
+                id = board[shape.i][shape.j];
+            }
+            board[shape.i][shape.j] = index;
+            // break;
+        }
 
-            if (isLegalPosition(shape.i, shape.j - 1, isBonus)) {
-                board[shape.i][shape.j] = id;
-                shape.j--;
-                if (board[shape.i][shape.j] !== 2) {
-                    id = board[shape.i][shape.j];
-                }
-                board[shape.i][shape.j] = index;
-                // break;
+        if (isLegalPosition(shape.i, shape.j - 1, isBonus)) {
+            board[shape.i][shape.j] = id;
+            shape.j--;
+            if (board[shape.i][shape.j] !== 2) {
+                id = board[shape.i][shape.j];
             }
+            board[shape.i][shape.j] = index;
+            // break;
         }
-        // rand = Math.random();
+    }
+    // rand = Math.random();
     // }
 }
 
@@ -1190,7 +1190,7 @@ function updateGhostLocation(positionGhost, IdGhost ,typeGhost ) {
             }
         }
 
-        }
+    }
     //     ran = Math.random();
     // }
 
@@ -1202,7 +1202,6 @@ function updateGhostLocation(positionGhost, IdGhost ,typeGhost ) {
         board[positionGhost.i][positionGhost.j] = IdGhost;
     }
 }
-
 
 function savePositionOfFoodGhost( positionGhost , typeGhost) {
     savePosition[typeGhost][0] = positionGhost.i;

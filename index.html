@@ -231,6 +231,7 @@
 
 
     <section id="Login">
+        <form id="LoginForm">
         <h1>Login</h1>
         <b>User name: </b> <input type="text" class="text" id="userNameCheck" placeholder="please enter your user name">
         <br>
@@ -239,6 +240,7 @@
         <br>
         <br>
         <button class="smallButtons" id="Connect" type="button" onClick="checkUser()"> Connect </button>
+        </form>
     </section>
 
     <section id="Settings">
@@ -330,6 +332,11 @@
             <canvas id="canvas" height="375" width="380" ></canvas>
         </div>
 
+        <div class="smallButtonsGame" >
+            <button class="ButtonsGame" type="button" onClick="startNewGame()">Start New <br> Game</button>
+            <br>
+            <button class="ButtonsGame" type="button" onClick="startAgain()">Start <br> Again</button>
+        </div>
     </section>
 
 </div><!--end content-->
@@ -338,7 +345,7 @@
 <footer>
     <div id="footer">
         <span>
-            <!img class="footer" src="email.png" width=20px; height=20px;>
+            <img class="footer" src="email.png" width=20px; height=20px;>
         </span>
         <a> Contact Us: moravit@post.bgu.ac.il , yuvalzeh@post.bgu.ac.il</a>
     </div>

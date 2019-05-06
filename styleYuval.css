@@ -214,7 +214,6 @@ button.text, input.text{
     margin-left: 30%;
     border: 2px outset black;
     border-radius: 8px;
-
 }
 
 #gameDetails{
@@ -227,8 +226,6 @@ button.text, input.text{
     border-style: outset;
     font-family: menu, sans-serif;;
     border-color: black;
-
-
 }
 
 .scores{

@@ -68,6 +68,10 @@ button.Buttons, input.Buttons  {
 
 button.text, input.text{
     text-align: center;
+    padding-left: 1%;
+    padding-right: 7%;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 #content{
@@ -118,14 +122,31 @@ button.text, input.text{
     height: 1%;
 }
 
-#Login{
-    text-align: center;
-}
-
 #registration span{
     display: none;
     color: red;
     font-weight: bold;
+}
+
+#Login{
+    text-align: center;
+}
+
+#Login input{
+    margin-bottom: 1.5%;
+    font-family: "Calibri Light", serif;
+    width: 30%;
+    left: 50%;
+    text-align: center;
+}
+
+#LoginForm{
+    max-width: 50%;
+    margin-left: 3%;
+    padding-left: 20%;
+    padding-top: 1.5%;
+    padding-bottom: 3%;
+    text-align: center;
 }
 
 #registrationLogIn span{
@@ -133,6 +154,24 @@ button.text, input.text{
     color: red;
     font-weight: bold;
 }
+
+.ButtonsGame{
+    background-color: rgb(204, 255, 255);
+    color: black;
+    font-size: 20px;
+    display: inline-block;
+    cursor: pointer;
+    font-family: "Comic Sans MS";
+    border-radius: 8px;
+    top: 70%;
+    height: 10%;
+    width: 10%;
+    margin-left: 80%;
+    margin-top: 3%;
+    up: 90%
+}
+
+
 
 
 .birthday{
@@ -161,7 +200,7 @@ button.text, input.text{
 
 #Settings #leftScreen{
     position:absolute;
-    top: 12%;
+    top: 20%;
     margin-left: 35%;
     float: left;
     font-weight: bold;
@@ -169,6 +208,7 @@ button.text, input.text{
 }
 
 #Settings #rightScreen{
+    top: 20%;
     margin-right: 40%;
     float: right;
 }
@@ -184,7 +224,7 @@ button.text, input.text{
     left: 43%;
 }
 
-.smallButtons{
+.smallButtons {
     background-color: rgb(153, 153, 255);
     color: white;
     text-align: center;
@@ -194,15 +234,6 @@ button.text, input.text{
     font-family: "Comic Sans MS";
     border-radius: 8px;
 }
-
-/*#Settings #start{
-    margin-left: 5%;
-    margin-top: 2%;
-}
-
-#Settings #random{
-    margin-top: 2%;
-}*/
 
 #startGame #canvas{
     position: absolute;
@@ -214,7 +245,6 @@ button.text, input.text{
     margin-left: 30%;
     border: 2px outset black;
     border-radius: 8px;
-
 }
 
 #gameDetails{
@@ -227,8 +257,6 @@ button.text, input.text{
     border-style: outset;
     font-family: menu, sans-serif;;
     border-color: black;
-
-
 }
 
 .scores{
@@ -259,33 +287,12 @@ button.text, input.text{
     width:100%;
     height:5%;
     text-align: center;
-    padding-top: 4px;
+    padding-top: 7px;
     font-family: menu, sans-serif;;
     color: white;
     font-size: 12px;
 }
 
 .footer{
-    /*margin: -0px 0px;*/
+    margin: -5px 0px;
 }
-
-.smallButtonsGame{
-    float: right;
-    margin-right: 10%;
-    top: 40%;
-    margin-top: 10%;
-
-
-}
-
-.ButtonsGame{
-    background-color: rgb(153, 153, 255);
-    color: white;
-    border: none;
-    text-align: center;
-    font-size: 15px;
-    /*display: inline-block;*/
-    cursor: pointer;
-    font-family: "Comic Sans MS";
-}
-
