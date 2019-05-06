@@ -18,12 +18,15 @@ var twentyfivePointColor;
 //
 var context = canvas.getContext("2d");
 var shape = new Object();
+shape.i = 0;
+shape.j = 0;
 var board;
 var score;
 var pac_color;
 var start_time;
 var time_elapsed;
 var interval;
+var intervalTime;
 var fivePointsFood;
 var fifteenPointsFood;
 var twentyfivePointsFood;
@@ -34,6 +37,7 @@ var countTwentyfive = 0;
 var direction = "RIGHT";
 
 var music = new Audio('PacManOriginalTheme.mp3');
+var lostMusic = new Audio('lost.mp3');
 
 //ghosts
 var positionGhost1 = new Object();
@@ -82,6 +86,8 @@ function load(){
 
 function showDiv(id){
     //clearInterval(interval);
+    isLost = false;
+    lostMusic.pause();
     if (id !== 'startGame') {
         music.pause();
         clearInterval(interval);
@@ -291,7 +297,7 @@ function closeAboutDialogWithClick(){
 }
 
 // get up button
-$("#up").keydown(function (event) {
+function upKey(event) {
     upButton = String.fromCharCode(event.which);
     $("#up").text('');
     if (upButton === "&"){
@@ -311,11 +317,11 @@ $("#up").keydown(function (event) {
         return;
     }
     $("#up").val(upButton + " was chosen");
-    //upButton = event.code;
-});
+    upButton = event.code;
+}
 
 //get left button
-$("#left").keydown(function (event) {
+function leftKey (event) {
     leftButton = String.fromCharCode(event.which);
     $("#left").text('');
     if (leftButton === "&"){
@@ -335,36 +341,37 @@ $("#left").keydown(function (event) {
         return;
     }
     $("#left").val(leftButton + " was chosen");
-    //leftButton = event.code;
-});
+    leftButton = event.code;
+}
 
-// get right button
-$("#right").keydown(function (event) {
+
+function rightKey(event) {
     rightButton = String.fromCharCode(event.which);
     $("#right").text('');
-    if (rightButton === "&"){
+    if (rightButton === "&") {
         $("#right").val("Arrow UP was chosen");
         return;
     }
-    if (rightButton === "'"){
+    if (rightButton === "'") {
         $("#right").val("Arrow RIGHT was chosen");
         return;
     }
-    if (rightButton === "("){
+    if (rightButton === "(") {
         $("#right").val("Arrow DOWN was chosen");
         return;
     }
-    if (rightButton === "%"){
+    if (rightButton === "%") {
         $("#right").val("Arrow LEFT was chosen");
         return;
     }
     $("#right").val(rightButton + " was chosen");
-    //rightButton = event.code;
+    rightButton = event.code;
     //alert(rightButton);
-});
+}
+
 
 // get down button
-$("#down").keydown(function (event) {
+function downKey (event) {
     downButton = String.fromCharCode(event.which);
     $("#down").text('');
     if (downButton === "&"){
@@ -384,8 +391,8 @@ $("#down").keydown(function (event) {
         return;
     }
     $("#down").val(downButton + " was chosen");
-    //downButton = event.code;
-});
+    downButton = event.code;
+}
 
 
 
@@ -504,6 +511,7 @@ function setGameParameters() {
 
 
 function StartGame() {
+    isLost = false;
     // clearInterval(interval);
     board = new Array();
     score = 0;
@@ -554,7 +562,7 @@ function StartGame() {
                 if (randomNum <= 1.0 * food_remain / cnt) {
                     food_remain--;
                     board[i][j] = 1;
-                } else if (i !== 0 && j !== 0 && i !== 13 && j !== 13  && pacman_remain > 0/*&& randomNum < 1.0 * (pacman_remain + food_remain) / cnt*/) {
+                } else if (randomNum < 1.0 * (pacman_remain + food_remain) / cnt) {
                     shape.i = i;
                     shape.j = j;
                     pacman_remain--;
@@ -566,6 +574,12 @@ function StartGame() {
             }
         }
     }
+    if (shape.i === 0 || shape.i === 13 || shape.j === 0 || shape.j === 13){
+        board[shape.i][shape.j] = 0;
+        shape.i = 5;
+        shape.j = 4;
+        board[shape.i][shape.j] = 2;
+    }
     while (food_remain > 0) {
         var emptyCell = findRandomEmptyCell(board);
         board[emptyCell[0]][emptyCell[1]] = 1;
@@ -576,6 +590,7 @@ function StartGame() {
         board[emptyCell[0]][emptyCell[1]] = 6; // bonus
         bonus.i = emptyCell[0];
         bonus.j = emptyCell[1];
+        lastBonusId = 1;
     }
 
     if (!heartRecieve && numberOfLives !== 3){
@@ -583,6 +598,7 @@ function StartGame() {
         board[emptyCell[0]][emptyCell[1]] = 8; // heart
         heart.i = emptyCell[0];
         heart.j = emptyCell[1];
+        lastHeartId = 1;
     }
 
 
@@ -595,9 +611,22 @@ function StartGame() {
         keysDown[e.code] = false;
     }, false);
     interval = setInterval(UpdatePosition, 250);
-    //intervalBonus = setInterval(moveBonus,250);
+    intervalTime = setInterval(gameOver, time * 1000);
 }
 
+function gameOver() {
+    clearInterval(interval);
+    music.pause();
+    if (score < 150) {
+        window.alert(`You can do better than ${score}`);
+    }
+    else{
+        window.alert("We Have a WINNER!");
+    }
+    clearInterval(intervalTime);
+    showDiv("Settings");
+
+}
 
 function findRandomEmptyCell(board) {
     var i = Math.floor((Math.random() * 13) + 1);
@@ -623,16 +652,16 @@ function findRandomCellForExtra(board) {
  * @return {number}
  */
 function GetKeyPressed() {
-    if (keysDown['ArrowUp']) {
+    if (keysDown[upButton]) {
         return 1;
     }
-    if (keysDown['ArrowDown']) {
+    if (keysDown[downButton]) {
         return 2;
     }
-    if (keysDown['ArrowLeft']) {
+    if (keysDown[leftButton]) {
         return 3;
     }
-    if (keysDown['ArrowRight']) {
+    if (keysDown[rightButton]) {
         return 4;
     }
 }
@@ -807,7 +836,7 @@ function isMonsterPosition(i,j) {
     if (ghostAmount >=2 && i === positionGhost2.i && j === positionGhost2.j) {
         return true;
     }
-    return (ghostAmount ===3 && i === positionGhost3.i && j === positionGhost3.j);
+    return (ghostAmount === "3" && i === positionGhost3.i && j === positionGhost3.j);
 
 }
 
@@ -822,31 +851,35 @@ function getMonsterIndex(i, j) {
 }
 
 function UpdatePosition() {
+    var x = GetKeyPressed();
     if (!isLost) {
         board[shape.i][shape.j] = 0;
+        updateGhostLocation(positionGhost1, 7, 0);
+        if (ghostAmount >= 2) {
+            updateGhostLocation(positionGhost2, 7.1, 1);
+        }
+        if (ghostAmount === "3") {
+            updateGhostLocation(positionGhost3, 7.2, 2);
+        }
     }
-    updateGhostLocation(positionGhost1, 7 , 0);
-    if(ghostAmount >= 2) {
-        updateGhostLocation(positionGhost2, 7.1, 1);
-    }
-    if(ghostAmount === 3) {
-        updateGhostLocation(positionGhost3, 7.2, 2);
-    }
-
     if (isLost){
+        music.pause();
+        isLost = false;
         board[shape.i][shape.j] = getMonsterIndex(shape.i,shape.j);
         Draw(direction);
         if (numberOfLives === 1){
-            window.alert("Game Over");
-            music.pause();
+            window.alert("You Lost!");
             showDiv('Settings');
             clearInterval();
         }
         else{
-            alert("You lost");
+            lostMusic = new Audio("lost.mp3");
+            lostMusic.play();
+            alert(`You lost this chance, you've got ${numberOfLives - 1} more chances`);
             clearInterval(interval);
         }
     }
+
     if (!bonusRecieve) {
         moveExtra(bonus, 6,true, lastBonusId);
     }
@@ -855,30 +888,33 @@ function UpdatePosition() {
         moveExtra(heart, 8,false, lastHeartId);
     }
 
-    var x = GetKeyPressed();
     if (x === 1) {
         if (shape.j > 0 && board[shape.i][shape.j - 1] !== 4 ) {
             shape.j--;
         }
         direction = "UP";
+        // x = undefined;
     }
     if (x === 2) {
         if (shape.j < 13 && board[shape.i][shape.j + 1] !== 4 ) {
             shape.j++;
         }
         direction = "DOWN";
+        // x = undefined;
     }
     if (x === 3) {
         if (shape.i > 0 && board[shape.i - 1][shape.j] !== 4  ) {
             shape.i--;
         }
         direction = "LEFT";
+        // x = undefined;
     }
     if (x === 4) {
         if (shape.i < 13 && board[shape.i + 1][shape.j] !== 4) {
             shape.i++;
         }
         direction = "RIGHT";
+        // x = undefined;
     }
     if (board[shape.i][shape.j] === 5) {
         score+=5;
@@ -892,14 +928,14 @@ function UpdatePosition() {
         score+=25;
         twentyfivePointsFood--;
     }
-    if (shape.i === bonus.i && shape.j === bonus.j && board[shape.i][shape.j] === 50){
+    if (shape.i === bonus.i && shape.j === bonus.j && !bonusRecieve){
         score +=50;
         board[bonus.i][bonus.j] = 2;
         bonusRecieve = true;
         // board[bonus.i][bonus.j] = lastBonusId;
 
     }
-    if (shape.i === heart.i && shape.j === heart.j){
+    if (shape.i === heart.i && shape.j === heart.j && !heartRecieve){
         numberOfLives++;
         board[heart.i][heart.j] = 2;
         heartRecieve = true;
@@ -907,34 +943,39 @@ function UpdatePosition() {
 
     }
     if (isMonsterPosition(shape.i,shape.j)){
-        board[shape.i][shape.j] = getMonsterIndex(shape.i,shape.j);
-        Draw(direction);
-        if (numberOfLives === 1){
-            window.alert("Game Over");
-            music.pause();
-            showDiv('Settings');
-            clearInterval();
-        }
-        else{
-            alert("You lost");
-            clearInterval(interval);
-        }
+        /*        numberOfLives--;
+                board[shape.i][shape.j] = getMonsterIndex(shape.i,shape.j);
+                Draw(direction);
+                if (numberOfLives === 1){
+                    window.alert("Game Over");
+                    music.pause();
+                    showDiv('Settings');
+                    clearInterval();
+                }
+                else{
+                    alert("You lost, you've got ${numberOfLives} more chances");
+                    music.pause();
+                    lostMusic = new Audio("lost.mp3");
+                    lostMusic.play();
+                    clearInterval(interval);
+                }*/
+        isLost = true;
     }
     else {
         board[shape.i][shape.j] = 2;
         var currentTime = new Date();
-        time_elapsed = Math.floor((currentTime - start_time) / 1000);
+        time_elapsed = time - Math.floor((currentTime - start_time) / 1000);
         if (score === (5 * countFive + 15 * countFifteen + 25 * countTwentyfive)) {
             window.clearInterval(interval);
-            window.alert("Game completed");
+            window.alert("WE HAVE A WINNER!");
             music.pause();
             showDiv('Settings');
         }
-        if (time_elapsed === time) {
+/*        if (time_elapsed === 1) {
             window.clearInterval(interval);
             window("Game Over...");
             music.pause();
-        } else {
+        }*/ else {
             Draw(direction);
         }
     }
@@ -974,6 +1015,7 @@ function setColors(){
 
 function isLegalPosition(x, y, isBonus) {
     if (x > - 1 && x < 14 && y > -1 && y < 14) {
+        if (board[x][y] === 4) return false;
         var isLegal = isBonus && board[x][y] !== 8; // the shape is bonus and the new location isn't heart
         if (!isBonus) {
             isLegal = board[x][y] !== 6; // the shape is heart and the new location isn't bonus
@@ -986,53 +1028,55 @@ function isLegalPosition(x, y, isBonus) {
 function moveExtra(shape,index, isBonus, id){
     var rand = Math.random();
     // while (true) {
-        if (rand < 0.5) {
-            if (isLegalPosition(shape.i + 1, shape.j, isBonus)) {
-                board[shape.i][shape.j] = id;
-                shape.i++;
-                if (board[shape.i][shape.j] !== 2) {
-                    id = board[shape.i][shape.j];
-                }
-                board[shape.i][shape.j] = index;
-                // break;
+    if (rand < 0.5) {
+        if (isLegalPosition(shape.i + 1, shape.j, isBonus)) {
+            board[shape.i][shape.j] = id;
+            shape.i++;
+            if (board[shape.i][shape.j] !== 2) {
+                id = board[shape.i][shape.j];
             }
-            if (isLegalPosition(shape.i - 1, shape.j, isBonus)) {
-                board[shape.i][shape.j] = id;
-                bonus.i--;
-                if (board[shape.i][shape.j] !== 2) {
-                    id = board[shape.i][shape.j];
-                }
-                board[shape.i][shape.j] = index;
-                // break;
-            }
+            board[shape.i][shape.j] = index;
+            // break;
         }
-        else {
-            if (isLegalPosition(shape.i, shape.j + 1, isBonus)) {
-                board[shape.i][shape.j] = id;
-                shape.j++;
-                if (board[shape.i][shape.j] !== 2) {
-                    id = board[shape.i][shape.j];
-                }
-                board[shape.i][shape.j] = index;
-                // break;
+        else if (isLegalPosition(shape.i - 1, shape.j, isBonus)) {
+            board[shape.i][shape.j] = id;
+            bonus.i--;
+            if (board[shape.i][shape.j] !== 2) {
+                id = board[shape.i][shape.j];
+            }
+            board[shape.i][shape.j] = index;
+            // break;
+        }
+    }
+    else {
+        if (isLegalPosition(shape.i, shape.j + 1, isBonus)) {
+            board[shape.i][shape.j] = id;
+            shape.j++;
+            if (board[shape.i][shape.j] !== 2) {
+                id = board[shape.i][shape.j];
+            }
+            board[shape.i][shape.j] = index;
+            // break;
+        }
+
+        else if (isLegalPosition(shape.i, shape.j - 1, isBonus)) {
+            board[shape.i][shape.j] = id;
+            shape.j--;
+            if (board[shape.i][shape.j] !== 2) {
+                id = board[shape.i][shape.j];
             }
 
-            if (isLegalPosition(shape.i, shape.j - 1, isBonus)) {
-                board[shape.i][shape.j] = id;
-                shape.j--;
-                if (board[shape.i][shape.j] !== 2) {
-                    id = board[shape.i][shape.j];
-                }
-                board[shape.i][shape.j] = index;
-                // break;
-            }
+            board[shape.i][shape.j] = index;
+            // break;
         }
-        // rand = Math.random();
+    }
+    // rand = Math.random();
     // }
 }
 
 function isPossibleMoveForGhost(i, j) {
     if (i >= 0 && i < 14 && j >= 0 && j < 14){
+        if (board[i][j] === 4) return false;
         return board[i][j] !== 4 && board[i][j] !== 7 && board[i][j] !== 7.1 && board[i][j] !== 7.2 &&
             board[i][j] !== 6 && board[i][j] !== 8;
     }
@@ -1045,112 +1089,152 @@ function updateGhostLocation(positionGhost, IdGhost ,typeGhost ) {
     // var isMoved = moveGhost(positionGhost,IdGhost, typeGhost);
     var isMoved = false;
     // while (true) {
-        if (ran < 0.5) {
-            if (shape.j > positionGhost.j) {
-                if (shape.i === positionGhost.i) {
-                    if (isPossibleMoveForGhost(positionGhost.i, positionGhost.j + 1)) {
-                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                        positionGhost.j++;
-                        isMoved = true;
-                        // break;
-                    } else if (rand < 0.25 && isPossibleMoveForGhost(positionGhost.i + 1, positionGhost.j)) {
-                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                        positionGhost.i++;
-                        isMoved = true;
-                        // break;
-                    } else if (isPossibleMoveForGhost(positionGhost.i - 1, positionGhost.j)) {
-                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                        positionGhost.i--;
-                        isMoved = true;
-                        // break;
-                    }
-                } else if (isPossibleMoveForGhost(positionGhost.i, positionGhost.j + 1)) {
+    if (ran < 0.5) {
+        if (shape.j > positionGhost.j) {
+            if (shape.i === positionGhost.i) {
+                if (isPossibleMoveForGhost(positionGhost.i, positionGhost.j + 1)) {
                     board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
                     positionGhost.j++;
                     isMoved = true;
                     // break;
-                }
-            } else if (shape.j < positionGhost.j) {
-                if (shape.i === positionGhost.i) {
-                    if (isPossibleMoveForGhost(positionGhost.i, positionGhost.j - 1)) {
-                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                        positionGhost.j++;
-                        isMoved = true;
-                        // break;
-                    } else if (rand < 0.25 && isPossibleMoveForGhost(positionGhost.i + 1, positionGhost.j)) {
-                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                        positionGhost.i++;
-                        isMoved = true;
-                        // break;
-                    } else if (isPossibleMoveForGhost(positionGhost.i - 1, positionGhost.j)) {
-                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                        positionGhost.i--;
-                        isMoved = true;
-                        // break;
-                    }
-                } else if (isPossibleMoveForGhost(positionGhost.i, positionGhost.j - 1)) {
-                    board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                    positionGhost.j--;
-                    isMoved = true;
-                    // break;
-                }
-            }
-        } else {
-            if (shape.i > positionGhost.i) {
-                if (shape.j === positionGhost.j){
-                    if (isPossibleMoveForGhost(positionGhost.i + 1, positionGhost.j)){
-                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                        positionGhost.i++;
-                        isMoved = true;
-                        // break;
-                    }
-                    else if (rand < 0.25 && isPossibleMoveForGhost(positionGhost.i , positionGhost.j + 1)){
-                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                        positionGhost.j++;
-                        isMoved = true;
-                        // break;
-                    }
-                    else if (isPossibleMoveForGhost(positionGhost.i , positionGhost.j - 1)){
-                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                        positionGhost.j--;
-                        isMoved = true;
-                        // break;
-                    }
-                } else if (isPossibleMoveForGhost(positionGhost.i + 1, positionGhost,j)){
+                } else if (ran < 0.25 && isPossibleMoveForGhost(positionGhost.i + 1, positionGhost.j)) {
                     board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
                     positionGhost.i++;
                     isMoved = true;
                     // break;
-                }
-            } else if (shape.i < positionGhost.i) {
-                if (shape.j === positionGhost.j){
-                    if (isPossibleMoveForGhost(positionGhost.i - 1, positionGhost.j)){
-                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                        positionGhost.i--;
-                        isMoved = true;
-                        // break;
-                    }
-                    else if (rand < 0.25 && isPossibleMoveForGhost(positionGhost.i, positionGhost.j + 1)){
-                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                        positionGhost.j++;
-                        isMoved = true;
-                        // break;
-                    }
-                    else if (isPossibleMoveForGhost(positionGhost.i, positionGhost.j - 1)){
-                        board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
-                        positionGhost.j--;
-                        isMoved = true;
-                        // break;
-                    }
-                } else if (isPossibleMoveForGhost(positionGhost.i - 1, positionGhost.j)){
+                } else if (isPossibleMoveForGhost(positionGhost.i - 1, positionGhost.j)) {
                     board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
                     positionGhost.i--;
                     isMoved = true;
                     // break;
                 }
+            } else if (isPossibleMoveForGhost(positionGhost.i, positionGhost.j + 1)) {
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.j++;
+                isMoved = true;
+                // break;
             }
-
+            else if (shape.i > positionGhost.i && isPossibleMoveForGhost(positionGhost.i + 1, positionGhost.j)){
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.i++;
+                isMoved = true;
+            }
+            else if (shape.i < positionGhost.i && isPossibleMoveForGhost(positionGhost.i - 1, positionGhost.j)){
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.i--;
+                isMoved = true;
+            }
+        } else if (shape.j < positionGhost.j) {
+            if (shape.i === positionGhost.i) {
+                if (isPossibleMoveForGhost(positionGhost.i, positionGhost.j - 1)) {
+                    board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                    positionGhost.j++;
+                    isMoved = true;
+                    // break;
+                } else if (ran < 0.25 && isPossibleMoveForGhost(positionGhost.i + 1, positionGhost.j)) {
+                    board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                    positionGhost.i++;
+                    isMoved = true;
+                    // break;
+                } else if (isPossibleMoveForGhost(positionGhost.i - 1, positionGhost.j)) {
+                    board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                    positionGhost.i--;
+                    isMoved = true;
+                    // break;
+                }
+            } else if (isPossibleMoveForGhost(positionGhost.i, positionGhost.j - 1)) {
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.j--;
+                isMoved = true;
+                // break;
+            }
+            else if (shape.i > positionGhost.i && isPossibleMoveForGhost(positionGhost.i + 1, positionGhost.j)){
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.i++;
+                isMoved = true;
+            }
+            else if (shape.i < positionGhost.i && isPossibleMoveForGhost(positionGhost.i - 1, positionGhost.j)){
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.i--;
+                isMoved = true;
+            }
         }
+        else if (isPossibleMoveForGhost(positionGhost.i , positionGhost.j - 1)){
+            board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+            positionGhost.j--;
+        }
+    } else {
+        if (shape.i > positionGhost.i) {
+            if (shape.j === positionGhost.j){
+                if (isPossibleMoveForGhost(positionGhost.i + 1, positionGhost.j)){
+                    board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                    positionGhost.i++;
+                    isMoved = true;
+                    // break;
+                }
+                else if (ran < 0.25 && isPossibleMoveForGhost(positionGhost.i , positionGhost.j + 1)){
+                    board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                    positionGhost.j++;
+                    isMoved = true;
+                    // break;
+                    isMoved = true;
+                    // break;
+                }
+            } else if (isPossibleMoveForGhost(positionGhost.i + 1, positionGhost.j)){
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.i++;
+                isMoved = true;
+                // break;
+            }
+            else if (shape.j > positionGhost.j && isPossibleMoveForGhost(positionGhost.i, positionGhost.j + 1)){
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.j++;
+                isMoved = true;
+            }
+            else if (shape.j < positionGhost.j && isPossibleMoveForGhost(positionGhost.i, positionGhost.j - 1)){
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.j--;
+                isMoved = true;
+            }
+        } else if (shape.i < positionGhost.i) {
+            if (shape.j === positionGhost.j){
+                if (isPossibleMoveForGhost(positionGhost.i - 1, positionGhost.j)){
+                    board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                    positionGhost.i--;
+                    isMoved = true;
+                    // break;
+                }
+                else if (ran < 0.25 && isPossibleMoveForGhost(positionGhost.i, positionGhost.j + 1)){
+                    board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                    positionGhost.j++;
+                    isMoved = true;
+                    // break;
+                }
+                else if (isPossibleMoveForGhost(positionGhost.i, positionGhost.j - 1)){
+                    board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                    positionGhost.j--;
+                    isMoved = true;
+                    // break;
+                }
+            } else if (isPossibleMoveForGhost(positionGhost.i - 1, positionGhost.j)){
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.i--;
+                isMoved = true;
+                // break;
+            }
+            else if (shape.j > positionGhost.j && isPossibleMoveForGhost(positionGhost.i, positionGhost.j + 1)){
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.j++;
+                isMoved = true;
+            }
+            else if (shape.j < positionGhost.j && isPossibleMoveForGhost(positionGhost.i, positionGhost.j - 1)){
+                board[positionGhost.i][positionGhost.j] = savePosition[typeGhost][2]; //save position of ghost
+                positionGhost.j--;
+                isMoved = true;
+            }
+        }
+
+    }
     //     ran = Math.random();
     // }
 
@@ -1158,9 +1242,11 @@ function updateGhostLocation(positionGhost, IdGhost ,typeGhost ) {
         savePositionOfFoodGhost(positionGhost, typeGhost);
         if (board[positionGhost.i][positionGhost.j] === 2) {
             isLost = true;
+
         }
         board[positionGhost.i][positionGhost.j] = IdGhost;
     }
+
 }
 
 
@@ -1175,14 +1261,16 @@ function startNewGame(){
 }
 
 function startAgain(){
+    lostMusic.pause();
     //board[shape.i][shape.j] = 7;
     numberOfLives--;
-    bonusRecieve = false;
+    //bonusRecieve = false;
+    isLost = false;
     clearInterval(interval);
     countFive = 0;
     countFifteen = 0;
     countTwentyfive = 0;
-    score = 0;
+    //score = 0;
     time_elapsed = 0;
     direction = "RIGHT";
     StartGame();

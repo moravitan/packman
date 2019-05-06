@@ -257,13 +257,13 @@
             <p> 25 point color:</p>
         </div>
         <div id="rightScreen">
-            <input type="text" id="up" placeholder="Up button" maxlength="1">
+            <input type="text" id="up" placeholder="Up button" maxlength="1" onkeypress="upKey(event)">
             <br>
-            <input type="text" id="left" placeholder="Left button" maxlength="1">
+            <input type="text" id="left" placeholder="Left button" maxlength="1" onkeypress="leftKey(event)">
             <br>
-            <input type="text" id="down" placeholder="down button" maxlength="1">
+            <input type="text" id="down" placeholder="down button" maxlength="1" onkeypress="downKey(event)">
             <br>
-            <input type="text" id="right"  placeholder="right button" maxlength="1">
+            <input type="text" id="right"  placeholder="right button" maxlength="1" onkeypress="rightKey(event)">
             <br><br>
             <input type="number" id="ballsAmount" class="property" min="50" max="90" value="50">
             <br>
